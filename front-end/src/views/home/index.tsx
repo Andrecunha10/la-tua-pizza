@@ -1,6 +1,5 @@
-import { Alert, Button, Container } from "react-bootstrap";
+import { Alert, Container } from "react-bootstrap";
 import styled from "styled-components";
-import BG from "../../assts/img/background_desktop.jpg"
 import PizzaDesktop from "../../assts/img/pizza_home_desktop.jpg"
 import PizzaMobile from "../../assts/img/pizza_home_mobile.jpg"
 import LogoTwitter from "../../assts/img/logo_twitter.svg"
@@ -9,22 +8,23 @@ import LogoFace from "../../assts/img/logo_facebook.svg"
 import PizzaLeft from "../../assts/img/pizza_left.jpg"
 import PizzaRigth from "../../assts/img/pizza_rigth.jpg"
 import { Layout } from "../../components/layout";
+import { CustomButton, FirstPButton, SecondPButton } from "../../components/button";
 
 export function HomeView() {
     return (
         <Layout>
             <Container fluid className="w-100 pe-0 pe-sm-3 ps-lg-5 align-items-center">
-                <div className="row">
+                <div className="row align-items-center">
                     <div className="col col-sm-6 col-lg-5 d-flex flex-column justify-content-center">
-                        <Title className="mt-4">A melhor pizza da região</Title>
+                        <Title className="mt-4 mt-sm-0">A melhor pizza da região</Title>
                         <div className="d-flex align-items-center justify-content-between gap-3">
                             <div>
                                 <p className="mt-5 mt-sm-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown</p>
                                 <div className="d-flex flex-column flex-md-row gap-3 justify-content-center align-items-center">
-                                    <Button>
-                                        <FirstPButton className="m-0">Pedido Online</FirstPButton>
-                                        <SecondPButton className="m-0">Faça Login</SecondPButton>
-                                    </Button>
+                                    <CustomButton variant="danger" to="/login">
+                                        <FirstPButton>Pedido Online</FirstPButton>
+                                        <SecondPButton>Faça Login</SecondPButton>
+                                    </CustomButton>
                                     <p className="mb-0 font-weight-bold">ACESSE O CARDÁPIO</p>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@ export function HomeView() {
                     </div>
                 </div>
             </Container>
-            <Container fluid className="d-flex flex-column px-xl-0">
+            <Container fluid className="d-flex flex-column px-lg-0">
                 <SubTitle>Sobre <span>Nós</span></SubTitle>
                 <div className="d-flex flex-row gap-3 gap-xl-5 align-items-center">
                     <div className="d-none d-lg-block">
@@ -50,13 +50,13 @@ export function HomeView() {
                     </div>
                 </div>
                 <div className="d-flex gap-3 justify-content-center">
-                    <a href="https://twitter.com/" target="_blank">
+                    <a href="https://twitter.com/" target="blank">
                         <img src={LogoTwitter} alt="Logo Twitter" width={58} height={58} />
                     </a>
-                    <a href="https://pt-br.facebook.com/" target="_blank">
+                    <a href="https://pt-br.facebook.com/" target="blank">
                         <img src={LogoFace} alt="Logo Twitter" width={58} height={58} />
                     </a>
-                    <a href="https://www.instagram.com/" target="_blank">
+                    <a href="https://www.instagram.com/" target="blank">
                         <img src={LogoInsta} alt="Logo Twitter" width={58} height={58} />
                     </a>
                 </div>
@@ -64,14 +64,15 @@ export function HomeView() {
             <Container fluid>
                 <SubTitle>Entre em <span>Contato</span></SubTitle>
                 <Alert variant="danger">Aqui vira um formulário</Alert>
-                <Button className="align-self-center">
-                    <FirstPButton className="m-0">Enviar</FirstPButton>
-                    <SecondPButton className="m-0">Sua Mensagem</SecondPButton>
-                </Button>
+                <CustomButton variant="danger" padding="lg">
+                    <FirstPButton>Enviar</FirstPButton>
+                    <SecondPButton>Sua Mensagem</SecondPButton>
+                </CustomButton>
             </Container>
         </Layout>
     )
 }
+
 const Title = styled.h1`
     font-family: 'Cabin Sketch', cursive;
     font-size: 3rem !important;
@@ -83,17 +84,6 @@ const Title = styled.h1`
         font-size: 4.5rem !important;
     }
     
-`
-
-const FirstPButton = styled.p`
-    font-weight: 700;
-    font-size: 1.125rem;
-    line-height: 1rem;
-`
-
-const SecondPButton = styled.p`
-    font-weight: 300;
-    line-height: 1rem;
 `
 
 const SubTitle = styled.h2`

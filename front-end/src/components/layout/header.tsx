@@ -1,8 +1,9 @@
-import { Button, Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
+import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import LogoMobile from "../../assts/img/logo_mobile.svg"
 import GGmenu from "../../assts/img/gg_menu-left.svg"
 import styled from "styled-components";
+import { CustomButton, FirstPButton, SecondPButton } from "../button";
 
 export function Header() {
     return (
@@ -25,14 +26,17 @@ export function Header() {
                                 <img src={LogoMobile} alt='Logo La Tua Pizza' width={224} height={81} />
                             </Offcanvas.Title>
                         </Offcanvas.Header>
-                        <Offcanvas.Body>
+                        <Offcanvas.Body className="ps-lg-0">
                             <Nav className="justify-content-end justify-content-lg-center flex-grow-1 pe-3 pe-lg-0 gap-lg-3 align-items-center">
-                                <StyledNavLink className="mb-3 mb-lg-0" as={Link} to="/">Home</StyledNavLink>
-                                <StyledNavLink className="mb-3 mb-lg-0" as={Link} to="/">Cardápio</StyledNavLink>
-                                <StyledNavLink className="mb-3 mb-lg-0" as={Link} to="/">Carrinho</StyledNavLink>
+                                <StyledNavLink className="mb-3 mb-lg-0 me-auto me-lg-0" as={Link} to="/">Home</StyledNavLink>
+                                <StyledNavLink className="mb-3 mb-lg-0 me-auto me-lg-0" as={Link} to="/">Cardápio</StyledNavLink>
+                                <StyledNavLink className="mb-3 mb-lg-0 me-auto me-lg-0" as={Link} to="/">Carrinho</StyledNavLink>
                             </Nav>
                             <Nav className="">
-                                <Button>Vai Mudar</Button>
+                                <CustomButton className="me-auto" padding="lg" to='/login' variant="danger">
+                                    <FirstPButton>Pedido Online</FirstPButton>
+                                    <SecondPButton>Faça Login</SecondPButton>
+                                </CustomButton>
                             </Nav>
                         </Offcanvas.Body>
                     </StyledOffCanvas>
@@ -52,10 +56,4 @@ const StyledNavLink = styled(Nav.Link)`
     color: var(--text-color);
     font-weight: 500;
     font-size: 1.25rem;
-`
-const StyledDiv = styled.div`
-    height: 1.5px;
-    width: 100%;
-    background-color: #BDBDBD;
-    border-radius: 30px;
 `

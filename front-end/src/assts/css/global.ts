@@ -26,4 +26,10 @@ export const GlobalStyle = createGlobalStyle`
         border-right: none;
         width: 100%;
     }
+
+    #offcanvasNavbar-expand-lg{
+        @media (min-width: 992px){
+            padding-left: 0;
+        }
+    }
 `

@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 export function Footer () {
     return (
-        <StyledFooter className="text-white d-flex align-items-center">
+        <StyledFooter className="text-white d-flex align-items-center py-2 mt-3">
             <Container fluid>
                 <p className="m-0">Página desenvolvida com o projeto de estudos.</p>
                 <div>
