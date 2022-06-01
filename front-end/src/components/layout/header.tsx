@@ -14,7 +14,7 @@ export function Header() {
                         <img src={GGmenu} alt="Toogle Menu" width={40} height={40} />
                     </Navbar.Toggle>
                     <Navbar.Brand as={Link} to='/'>
-                        <img src={LogoMobile} alt='Logo La Tua Pizza' width={224} height={81} />
+                        <StyledLogo src={LogoMobile} alt='Logo La Tua Pizza' width={224} height={81} />
                     </Navbar.Brand>
                     <StyledOffCanvas
                         id='offcanvasNavbar-expand-lg'
@@ -56,4 +56,10 @@ const StyledNavLink = styled(Nav.Link)`
     color: var(--text-color);
     font-weight: 500;
     font-size: 1.25rem;
+`
+const StyledLogo = styled.img`
+    @media(min-width: 992px){
+        width: 256px;
+        height: 88px;
+    }
 `

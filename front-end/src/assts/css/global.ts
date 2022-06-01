@@ -21,6 +21,20 @@ export const GlobalStyle = createGlobalStyle`
         font-family: 'Roboto', sans-serif;
     }
 
+    body::-webkit-scrollbar {
+        width: 10px;
+        background: #f4f4f4; 
+    }
+
+    body::-webkit-scrollbar-track {
+        background: #f4f4f4;   
+    }
+
+    body::-webkit-scrollbar-thumb {
+        background-color: var(--main-color); 
+        border-radius: 10px;
+    }
+
     .offcanvas-start{
         padding: 25px 45px;
         border-right: none;
@@ -29,7 +43,18 @@ export const GlobalStyle = createGlobalStyle`
 
     #offcanvasNavbar-expand-lg{
         @media (min-width: 992px){
-            padding-left: 0;
+            padding: 0;
         }
+    }
+    
+    .active{
+        color: #fff;
+        background-color: var(--main-color) !important;
+        border-color: var(--main-color) !important;
+    }
+
+    .active:hover {
+        background-color: #E35556 !important;
+        border: #E35556 1px solid !important;
     }
 `

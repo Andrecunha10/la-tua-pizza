@@ -49,10 +49,12 @@ const StyledButton = styled(Button)`
         }
     `}
     ${props => props.padding === 'lg' &&`
-        padding: 18px 50px;
+        @media (min-width: 992px) {
+            padding: 18px 50px;
+        }
     `}
     ${props => props.padding === 'sm' &&`
-        padding: 10px 24px;
+        padding: 8px 24px;
     `}
 `
 

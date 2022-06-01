@@ -13,7 +13,7 @@ import { CustomButton, FirstPButton, SecondPButton } from "../../components/butt
 export function HomeView() {
     return (
         <Layout>
-            <Container fluid className="w-100 pe-0 pe-sm-3 ps-lg-5 align-items-center">
+            <Container fluid className="w-100 ps-lg-5 align-items-center">
                 <div className="row align-items-center">
                     <div className="col col-sm-6 col-lg-5 d-flex flex-column justify-content-center">
                         <Title className="mt-4 mt-sm-0">A melhor pizza da região</Title>
@@ -21,7 +21,7 @@ export function HomeView() {
                             <div>
                                 <p className="mt-5 mt-sm-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown</p>
                                 <div className="d-flex flex-column flex-md-row gap-3 justify-content-center align-items-center">
-                                    <CustomButton variant="danger" to="/login">
+                                    <CustomButton variant="danger" to="/login" padding="lg">
                                         <FirstPButton>Pedido Online</FirstPButton>
                                         <SecondPButton>Faça Login</SecondPButton>
                                     </CustomButton>
@@ -99,6 +99,7 @@ const SubTitle = styled.h2`
 
 const SlicedPizza = styled.img`
     z-index: -1;
+    margin-right: -12px;
     @media (min-width: 576px) {
             display: none;
     }
