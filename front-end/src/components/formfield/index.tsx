@@ -1,3 +1,4 @@
+import { InputHTMLAttributes } from "react";
 import { Form, FormControlProps } from "react-bootstrap";
 import { IMaskInput } from "react-imask";
 import styled from "styled-components";
@@ -9,7 +10,8 @@ type Props = {
     visuallyHidden?: boolean
     mask?: { mask: string}[]
     onAccept?: (value: unknown) => void
-} & FormControlProps
+    borderRadius?: boolean
+} & FormControlProps & InputHTMLAttributes<HTMLInputElement>
 
 export function FormField ({ controlId, label, error, visuallyHidden=true, mask, onAccept, ...inputProps} : Props) {
     return (
@@ -36,10 +38,12 @@ export function FormField ({ controlId, label, error, visuallyHidden=true, mask,
 const StyledFormControl = styled(Form.Control)`
     background: #FFFFFF;
     border: 1px solid var(--main-color);
-    border-radius: 33px;
     height: 45px;
     color: var(--text-color);
     font-weight: 500;
+    ${props => props.borderRadius && `
+        border-radius: 30px;
+    `}
     &:focus{
         box-shadow: 0px 0px 3px 3px rgba(207, 48, 49, 0.2);
         border: 1px solid var(--main-color);

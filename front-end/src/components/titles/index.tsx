@@ -2,6 +2,7 @@ import styled from "styled-components"
 
 type Props = {
     children: React.ReactNode
+    className?: string
 }
 
 export function TitleH1 ({children}:Props){
@@ -17,9 +18,9 @@ const Title = styled.h2`
     font-size: 2rem;
 `
 
-export function TitleH2 ({ children }: Props){
+export function TitleH2 ({ children, ...props }: Props){
     return(
-        <SubTitle>{children}</SubTitle>
+        <SubTitle {...props}>{children}</SubTitle>
     )
 }
 
