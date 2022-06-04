@@ -1,4 +1,4 @@
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import { Form } from "react-bootstrap";
 import styled from "styled-components";
 import { CustomButton } from "../../components/button";
@@ -9,6 +9,8 @@ import { createUser } from "../../service/createusers";
 import { FirebaseError } from "firebase/app";
 import { AuthErrorCodes } from "firebase/auth"
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../../store/slices/userslices";
 
 type FormValues = {
     name: '',
@@ -21,6 +23,7 @@ type FormValues = {
 }
 
 export function Register (){
+    const dispatch = useDispatch()
     const formik = useFormik<FormValues>({
         initialValues: {
             name: '',
@@ -56,8 +59,9 @@ export function Register (){
         }),
         onSubmit: async (values) => {
             try{
-               await createUser(values)
-               console.log('deu bom')
+               const user = await createUser(values)
+               const action = updateUser(user)
+               dispatch(action)
             } catch (error){
                 if (error instanceof FirebaseError && error.code === AuthErrorCodes.EMAIL_EXISTS){
                     formik.setFieldError('email', 'Este email já está em uso por outro usuário.')
@@ -133,7 +137,14 @@ export function Register (){
                     )}
                 </Form.Group>
                 <div className="d-grid">
-                    <CustomButton variant="danger" type="submit">Criar Conta</CustomButton>
+                    <CustomButton 
+                        variant="danger" 
+                        type="submit"
+                        loading={formik.isSubmitting || formik.isValidating}
+                        disabled={formik.isSubmitting || formik.isValidating}
+                    >
+                        Criar Conta
+                    </CustomButton>
                 </div>
             </Form>         
         </div>
