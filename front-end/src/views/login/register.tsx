@@ -4,6 +4,11 @@ import styled from "styled-components";
 import { CustomButton } from "../../components/button";
 import { FormField } from "../../components/formfield";
 import { TitleH2 } from "../../components/titles";
+import * as yup from 'yup'
+import { createUser } from "../../service/createusers";
+import { FirebaseError } from "firebase/app";
+import { AuthErrorCodes } from "firebase/auth"
+import { toast } from "react-toastify";
 
 type FormValues = {
     name: '',
@@ -11,6 +16,7 @@ type FormValues = {
     phone: '',
     address: '',
     password: '',
+    confirmpassword: '',
     agree: false
 }
 
@@ -22,10 +28,45 @@ export function Register (){
             phone: '',
             address: '',
             password: '',
+            confirmpassword: '',
             agree: false
         },
-        onSubmit: (values) => {
-            console.log('oi', values)
+        validationSchema: yup.object().shape({
+            name: yup.string()
+                .required('Preencha o seu nome.')
+                .min(5, 'Informe pelo menos 5 caracteres.'),
+            email: yup.string()
+                .required('Preencha seu e-mail.')
+                .email('Preencha um email válido.'),
+            phone: yup.string()
+                .required('Preencha seu telefone.')
+                .min(14, 'Preencha um telefone válido.'),
+            address: yup.string()
+                .required('Preenha seu endereço de entregas.')
+                .min(10),
+            password: yup.string()
+                .required('É necessário criar uma senha.')
+                .min(6, 'Sua senha deve ter pelo menos 6 caractéres')
+                .max(20, 'Sua senha deve ter no máximo 20 caractéres.'),
+            confirmpassword: yup.string()
+                .required('É necessário confirmar sua senha.')
+                .oneOf([yup.ref('password'), null],'Senhas não conferem'),
+            agree: yup.boolean()
+                .equals([true], 'É preciso concordar com os termos de uso.')
+        }),
+        onSubmit: async (values) => {
+            try{
+               await createUser(values)
+               console.log('deu bom')
+            } catch (error){
+                if (error instanceof FirebaseError && error.code === AuthErrorCodes.EMAIL_EXISTS){
+                    formik.setFieldError('email', 'Este email já está em uso por outro usuário.')
+                } else{
+                    toast.error('Erro ao realizar cadastro, tente novamente',{
+                        theme: 'colored'
+                    })
+                }       
+            }
         }
     })
     const getFieldProps = (fildName: keyof FormValues) =>{
@@ -33,7 +74,7 @@ export function Register (){
             ...formik.getFieldProps(fildName),
             controlId: `input-${fildName}`,
             error: formik.errors[fildName],
-            isIvalid: formik.touched[fildName] && !!formik.errors[fildName],
+            isInvalid: formik.touched[fildName] && !!formik.errors[fildName],
             isValid: formik.touched[fildName] && !formik.errors[fildName]
         }
     }
@@ -73,18 +114,28 @@ export function Register (){
                     type="password"
                     {...getFieldProps('password')}
                 />
+                <FormField 
+                    label="Confirme sua senha"
+                    placeholder="Confirme a sua senha *"
+                    type="password"
+                    {...getFieldProps('confirmpassword')}
+                />
                 <Form.Group className="mb-3" controlId="input-agree">
                     <StyledCheck
                         {...getFieldProps('agree')} 
                         type="checkbox"
                         label={<>Eu li e aceito os <a href='/termos-de-uso.pdf' target='blank'>Termos de Uso</a>.</>}
                     />
+                    {formik.touched.agree && formik.errors.agree && (
+                        <Form.Control.Feedback className="d-block" type="invalid">
+                            {formik.errors.agree}
+                        </Form.Control.Feedback>
+                    )}
                 </Form.Group>
                 <div className="d-grid">
                     <CustomButton variant="danger" type="submit">Criar Conta</CustomButton>
                 </div>
-            </Form>
-           
+            </Form>         
         </div>
     )
 }

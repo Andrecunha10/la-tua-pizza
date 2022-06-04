@@ -7,8 +7,8 @@ export function LoginView (){
     return(
         <Layout>
             <Container className="d-flex h-100 flex-column align-items-center gap-4 flex-lg-row">
-                <TitleH2>Criar Conta</TitleH2>
-                <p>ou</p>
+                <TitleH2>Login</TitleH2>
+                <p className="mb-0">ou</p>
                 <Register />
             </Container>
         </Layout>

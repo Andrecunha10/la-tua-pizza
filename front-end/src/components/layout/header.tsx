@@ -56,6 +56,9 @@ const StyledNavLink = styled(Nav.Link)`
     color: var(--text-color);
     font-weight: 500;
     font-size: 1.25rem;
+    &:hover{
+        color: var(--main-color);
+    }
 `
 const StyledLogo = styled.img`
     @media(min-width: 992px){

@@ -34,6 +34,11 @@ export const GlobalStyle = createGlobalStyle`
         background-color: var(--main-color); 
         border-radius: 10px;
     }
+    a{
+        color: var(--main-color);
+        font-weight: 500;
+        text-decoration: none;
+    }
 
     .offcanvas-start{
         padding: 25px 45px;
@@ -56,5 +61,9 @@ export const GlobalStyle = createGlobalStyle`
     .active:hover {
         background-color: #E35556 !important;
         border: #E35556 1px solid !important;
+    }
+    
+    .form-check-input.is-valid:checked{
+        border-color: #198754;
     }
 `

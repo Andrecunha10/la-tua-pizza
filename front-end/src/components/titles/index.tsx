@@ -5,9 +5,9 @@ type Props = {
     className?: string
 }
 
-export function TitleH1 ({children}:Props){
+export function TitleH1 ({children, ...props}:Props){
     return(
-        <Title className="mt-3">{children}</Title>
+        <Title className="mt-3" {...props}>{children}</Title>
     )
 }
 
