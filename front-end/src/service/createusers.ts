@@ -4,24 +4,27 @@ import { User } from "../entities/user"
 import { auth, db } from "./firebase"
 
 type NewUserInput =  {
-    name: string,
+    firstName: string,
+    lastName: string,
     email: string,
     phone: string,
     address: string,
     password: string
 }
 
-export const createUser = async ( {email, password, name, phone, address}: NewUserInput )  : Promise<User> => {
+export const createUser = async ( {email, password, firstName, lastName, phone, address}: NewUserInput )  : Promise<User> => {
     const result = await createUserWithEmailAndPassword(auth, email, password)
     await setDoc(doc(db, 'users', result.user.uid), {
-        name,
+        firstName,
+        lastName,
         email,
         phone,
         address
     })
     return {
         id: result.user.uid,
-        name,
+        firstName,
+        lastName,
         email,
         phone,
         address

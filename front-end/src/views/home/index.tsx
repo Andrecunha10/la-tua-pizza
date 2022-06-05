@@ -9,8 +9,12 @@ import PizzaLeft from "../../assts/img/pizza_left.jpg"
 import PizzaRigth from "../../assts/img/pizza_rigth.jpg"
 import { Layout } from "../../components/layout";
 import { CustomButton, FirstPButton, SecondPButton } from "../../components/button";
+import { useSelector } from "react-redux";
+import { selectIsUserLoggedIn } from "../../store/slices/userslices";
+import { Link } from "react-router-dom";
 
 export function HomeView() {
+    const isUserLoggedIn = useSelector(selectIsUserLoggedIn)
     return (
         <Layout>
             <Container fluid className="w-100 ps-lg-5 align-items-center">
@@ -19,14 +23,21 @@ export function HomeView() {
                         <Title className="mt-4 mt-sm-0">A melhor pizza da região</Title>
                         <div className="d-flex align-items-center justify-content-between gap-3">
                             <div>
-                                <p className="mt-5 mt-sm-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown</p>
-                                <div className="d-flex flex-column flex-md-row gap-3 justify-content-center align-items-center">
-                                    <CustomButton variant="danger" to="/login" padding="lg">
-                                        <FirstPButton>Pedido Online</FirstPButton>
-                                        <SecondPButton>Faça Login</SecondPButton>
-                                    </CustomButton>
-                                    <p className="mb-0 font-weight-bold">ACESSE O CARDÁPIO</p>
-                                </div>
+                                <p className="mt-5 mt-sm-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown</p>                               
+                                    {isUserLoggedIn ? (
+                                        <CustomButton variant="danger" to="/cardapio" padding="lg">
+                                            <FirstPButton>Pedido Online</FirstPButton>
+                                            <SecondPButton>Acesse o Cardápio</SecondPButton>                                        
+                                        </CustomButton>
+                                    ) : (
+                                        <div className="d-flex flex-column flex-md-row gap-3 justify-content-center align-items-center">
+                                            <CustomButton variant="danger" to="/login" padding="lg">
+                                                <FirstPButton>Pedido Online</FirstPButton>
+                                                <SecondPButton>Faça Login</SecondPButton>                                        
+                                            </CustomButton>
+                                            <StyledLink to='/cardapio' className="mb-0 font-weight-bold">ACESSE O CARDÁPIO</StyledLink>
+                                        </div>
+                                    )}                                    
                             </div>
                             <SlicedPizza src={PizzaMobile} alt="Pizza cortada na metade" width={160} height={445} />
                         </div>
@@ -84,6 +95,13 @@ const Title = styled.h1`
         font-size: 4.5rem !important;
     }
     
+`
+
+const StyledLink = styled(Link)`
+    color: var(--main-text);
+    &:hover{
+        color: var(--main-color);
+    }
 `
 
 const SubTitle = styled.h2`

@@ -1,11 +1,20 @@
-import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
+import { Container, Nav, Navbar, NavDropdown, Offcanvas } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import LogoMobile from "../../assts/img/logo_mobile.svg"
 import GGmenu from "../../assts/img/gg_menu-left.svg"
 import styled from "styled-components";
 import { CustomButton, FirstPButton, SecondPButton } from "../button";
+import { useDispatch, useSelector } from "react-redux"
+import { deleteUser, selectUser } from "../../store/slices/userslices";
+import { logOutUser } from "../../service/logoutuser";
 
 export function Header() {
+    const user = useSelector(selectUser)
+    const dispatch = useDispatch()
+    const handleLogout = async () => {
+       await logOutUser()
+       dispatch(deleteUser())
+    }
     return (
         <header>
             <Navbar expand="lg">
@@ -33,10 +42,22 @@ export function Header() {
                                 <StyledNavLink className="mb-3 mb-lg-0 me-auto me-lg-0" as={Link} to="/">Carrinho</StyledNavLink>
                             </Nav>
                             <Nav className="">
-                                <CustomButton className="me-auto" padding="lg" to='/login' variant="danger">
-                                    <FirstPButton>Pedido Online</FirstPButton>
-                                    <SecondPButton>Faça Login</SecondPButton>
-                                </CustomButton>
+                                {user? (
+                                    <div>                                        
+                                        <StyledDropdown title={user.firstName} id="basic-nav-dropdown" align='end'>
+                                            <StyledItem  className="p-0">
+                                                <StyledGetOut onClick={handleLogout}>Sair</StyledGetOut>
+                                            </StyledItem >
+                                        </StyledDropdown>
+                                        <StyledWelcome className="mb-0 text-center d-none d-lg-block">Bem Vindo</StyledWelcome>    
+                                    </div>
+                                                                    
+                                ) : (
+                                    <CustomButton className="me-auto" padding="lg" to='/login' variant="danger">
+                                        <FirstPButton>Pedido Online</FirstPButton>
+                                        <SecondPButton>Faça Login</SecondPButton>
+                                    </CustomButton>
+                                )}
                             </Nav>
                         </Offcanvas.Body>
                     </StyledOffCanvas>
@@ -65,4 +86,41 @@ const StyledLogo = styled.img`
         width: 256px;
         height: 88px;
     }
+`
+
+const StyledDropdown = styled(NavDropdown)`    
+    a{
+        font-size: 1.375rem;
+        color: var(--main-color) !important;
+        font-weight: 700;
+        padding-bottom: 0;
+    }
+`
+
+const StyledItem = styled(NavDropdown.Item)`
+    &:active{
+        background-color: transparent;
+    }
+    &:hover{
+        background-color: var(--main-color);
+    }
+
+`
+
+const StyledGetOut = styled.button`
+    font-size: 1rem;
+    font-weight: 400;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color) !important;
+    &:hover{
+        background-color: transparent;
+        color: #fff !important;
+    }
+`
+const StyledWelcome = styled.p`
+    font-weight: 300;
+    color: var(--main-color);
+    font-size: 1rem;
 `

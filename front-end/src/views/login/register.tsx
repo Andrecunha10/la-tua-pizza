@@ -1,4 +1,4 @@
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import { Form } from "react-bootstrap";
 import styled from "styled-components";
 import { CustomButton } from "../../components/button";
@@ -11,9 +11,11 @@ import { AuthErrorCodes } from "firebase/auth"
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../store/slices/userslices";
+import { useNavigate } from "react-router-dom";
 
 type FormValues = {
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
     address: '',
@@ -24,9 +26,11 @@ type FormValues = {
 
 export function Register (){
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const formik = useFormik<FormValues>({
         initialValues: {
-            name: '',
+            firstName: '',
+            lastName: '',
             email: '',
             phone: '',
             address: '',
@@ -35,9 +39,10 @@ export function Register (){
             agree: false
         },
         validationSchema: yup.object().shape({
-            name: yup.string()
-                .required('Preencha o seu nome.')
-                .min(5, 'Informe pelo menos 5 caracteres.'),
+            firstName: yup.string()
+                .required('Preencha o seu primeiro nome.'),
+            lastName: yup.string()
+                .required('Preencha o seu sobrenome.'),
             email: yup.string()
                 .required('Preencha seu e-mail.')
                 .email('Preencha um email válido.'),
@@ -62,6 +67,7 @@ export function Register (){
                const user = await createUser(values)
                const action = updateUser(user)
                dispatch(action)
+               navigate('/cardapio')
             } catch (error){
                 if (error instanceof FirebaseError && error.code === AuthErrorCodes.EMAIL_EXISTS){
                     formik.setFieldError('email', 'Este email já está em uso por outro usuário.')
@@ -87,9 +93,14 @@ export function Register (){
             <TitleH2>Criar Conta</TitleH2>
             <Form onSubmit={formik.handleSubmit}>
                 <FormField 
-                    label="Nome"
-                    placeholder="Nome *"
-                    {...getFieldProps('name')}
+                    label="Primeiro Nome"
+                    placeholder="Primeiro Nome *"
+                    {...getFieldProps('firstName')}
+                />
+                <FormField 
+                    label="Sobrenome"
+                    placeholder="Sobrenome *"
+                    {...getFieldProps('lastName')}
                 />
                 <FormField 
                     label="E-mail"

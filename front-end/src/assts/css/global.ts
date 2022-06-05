@@ -43,7 +43,7 @@ export const GlobalStyle = createGlobalStyle`
     .offcanvas-start{
         padding: 25px 45px;
         border-right: none;
-        width: 100%;
+        max-width: 100%;
     }
 
     #offcanvasNavbar-expand-lg{
