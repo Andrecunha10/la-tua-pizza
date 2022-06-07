@@ -79,7 +79,7 @@ export function Register (){
             }
         }
     })
-    const getFieldProps = (fildName: keyof FormValues) =>{
+    const getFieldProps = (fildName: keyof FormValues) => {
         return{
             ...formik.getFieldProps(fildName),
             controlId: `input-${fildName}`,
