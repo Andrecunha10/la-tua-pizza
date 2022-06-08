@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 type Props = {
     controlId: string
-    label?: string
+    label: string
     error?: string
     visuallyHidden?: boolean
     mask?: { mask: string}[]
@@ -43,6 +43,7 @@ const StyledFormControl = styled(Form.Control)`
     font-weight: 500;
     ${props => props.borderRadius && `
         border-radius: 30px;
+        height: 55px;
     `}
     &:focus{
         box-shadow: 0px 0px 3px 3px rgba(207, 48, 49, 0.2);

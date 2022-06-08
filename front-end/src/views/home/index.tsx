@@ -1,4 +1,4 @@
-import { Alert, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import styled from "styled-components";
 import PizzaDesktop from "../../assts/img/pizza_home_desktop.jpg"
 import PizzaMobile from "../../assts/img/pizza_home_mobile.jpg"
@@ -12,6 +12,7 @@ import { CustomButton, FirstPButton, SecondPButton } from "../../components/butt
 import { useSelector } from "react-redux";
 import { selectIsUserLoggedIn } from "../../store/slices/userslices";
 import { Link } from "react-router-dom";
+import { FormMessage } from "./formmessage";
 
 export function HomeView() {
     const isUserLoggedIn = useSelector(selectIsUserLoggedIn)
@@ -73,12 +74,9 @@ export function HomeView() {
                 </div>
             </Container>
             <Container fluid>
-                <SubTitle>Entre em <span>Contato</span></SubTitle>
-                <Alert variant="danger">Aqui vira um formulário</Alert>
-                <CustomButton variant="danger" padding="lg">
-                    <FirstPButton>Enviar</FirstPButton>
-                    <SecondPButton>Sua Mensagem</SecondPButton>
-                </CustomButton>
+                <SubTitle className="mb-3">Entre em <span>Contato</span></SubTitle>
+                <FormMessage />
+                
             </Container>
         </Layout>
     )
