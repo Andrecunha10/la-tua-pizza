@@ -23,7 +23,7 @@ export function Header() {
                         <img src={GGmenu} alt="Toogle Menu" width={40} height={40} />
                     </Navbar.Toggle>
                     <Navbar.Brand as={Link} to='/'>
-                        <StyledLogo src={LogoMobile} alt='Logo La Tua Pizza' width={224} height={81} />
+                        <img src={LogoMobile} alt='Logo La Tua Pizza' width={224} height={81} />
                     </Navbar.Brand>
                     <StyledOffCanvas
                         id='offcanvasNavbar-expand-lg'
@@ -38,8 +38,8 @@ export function Header() {
                         <Offcanvas.Body className="ps-lg-0">
                             <Nav className="justify-content-end justify-content-lg-center flex-grow-1 pe-3 pe-lg-0 gap-lg-3 align-items-center">
                                 <StyledNavLink className="mb-3 mb-lg-0 me-auto me-lg-0" as={Link} to="/">Home</StyledNavLink>
-                                <StyledNavLink className="mb-3 mb-lg-0 me-auto me-lg-0" as={Link} to="/">Cardápio</StyledNavLink>
-                                <StyledNavLink className="mb-3 mb-lg-0 me-auto me-lg-0" as={Link} to="/">Carrinho</StyledNavLink>
+                                <StyledNavLink className="mb-3 mb-lg-0 me-auto me-lg-0" as={Link} to="/cardapio">Cardápio</StyledNavLink>
+                                <StyledNavLink className="mb-3 mb-lg-0 me-auto me-lg-0" as={Link} to="/carrinho">Carrinho</StyledNavLink>
                             </Nav>
                             <Nav className="">
                                 {user? (
@@ -79,12 +79,6 @@ const StyledNavLink = styled(Nav.Link)`
     font-size: 1.25rem;
     &:hover{
         color: var(--main-color);
-    }
-`
-const StyledLogo = styled.img`
-    @media(min-width: 992px){
-        width: 256px;
-        height: 88px;
     }
 `
 
