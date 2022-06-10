@@ -1,97 +1,61 @@
+import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { CustomButton } from "../../components/button";
 import { Layout } from "../../components/layout";
+import { Loading } from "../../components/loading";
 import { TitleH1 } from "../../components/titles";
+import { products } from "../../entities/product";
+import { getProducts } from "../../service/getproducts";
 
-export function MenuView (){
+export function MenuView () {
+    type productsProps = products | null
+    type item = {
+        name: string
+        image: string
+        description: string
+        price: number
+    }
+    
+    const [pizzas, setPizzas]:any = useState()
+        useEffect(() => {
+            const fetch = async ():Promise<void | productsProps > => {
+                try{
+                    const result = await getProducts()
+                    setPizzas(result)
+               } catch{
+                    toast.error('Erro ao carregar o cardápio. Tente novamente', {
+                        theme: 'colored'
+                    })
+               }      
+            }
+            fetch()
+        }, [])
+       
     return(
         <Layout>
-            <Container fluid>
-                <TitleH1 className="text-start my-3">Pizzas</TitleH1>
-                <GridDiv>
-                    <CardProduct className="d-flex flex-column align-items-center">
-                        <img src="/pepperoni.jpg" alt='Pepperoni' width={220} height={220}/>
-                        <h5>Pepperoni</h5>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley</p>
-                        <div className="d-flex flex-row justify-content-between align-items-center w-100">
-                            <p className="mb-0">R$ 24.90</p>
-                            <CustomButton variant="danger">Comprar</CustomButton>
-                        </div>
-                    </CardProduct>
-                    <CardProduct className="d-flex flex-column align-items-center">
-                        <img src="/pepperoni.jpg" alt='Pepperoni' width={220} height={220}/>
-                        <h5>Pepperoni</h5>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley</p>
-                        <div className="d-flex flex-row justify-content-between align-items-center w-100">
-                            <p className="mb-0">R$ 24.90</p>
-                            <CustomButton variant="danger">Comprar</CustomButton>
-                        </div>
-                    </CardProduct>
-                    <CardProduct className="d-flex flex-column align-items-center">
-                        <img src="/pepperoni.jpg" alt='Pepperoni' width={220} height={220}/>
-                        <h5>Pepperoni</h5>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley</p>
-                        <div className="d-flex flex-row justify-content-between align-items-center w-100">
-                            <p className="mb-0">R$ 24.90</p>
-                            <CustomButton variant="danger">Comprar</CustomButton>
-                        </div>
-                    </CardProduct>
-                    <CardProduct className="d-flex flex-column align-items-center">
-                        <img src="/pepperoni.jpg" alt='Pepperoni' width={220} height={220}/>
-                        <h5>Pepperoni</h5>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley</p>
-                        <div className="d-flex flex-row justify-content-between align-items-center w-100">
-                            <p className="mb-0">R$ 24.90</p>
-                            <CustomButton variant="danger">Comprar</CustomButton>
-                        </div>
-                    </CardProduct>
-                    <CardProduct className="d-flex flex-column align-items-center">
-                        <img src="/pepperoni.jpg" alt='Pepperoni' width={220} height={220}/>
-                        <h5>Pepperoni</h5>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley</p>
-                        <div className="d-flex flex-row justify-content-between align-items-center w-100">
-                            <p className="mb-0">R$ 24.90</p>
-                            <CustomButton variant="danger">Comprar</CustomButton>
-                        </div>
-                    </CardProduct>
-                    <CardProduct className="d-flex flex-column align-items-center">
-                        <img src="/pepperoni.jpg" alt='Pepperoni' width={220} height={220}/>
-                        <h5>Pepperoni</h5>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley</p>
-                        <div className="d-flex flex-row justify-content-between align-items-center w-100">
-                            <p className="mb-0">R$ 24.90</p>
-                            <CustomButton variant="danger">Comprar</CustomButton>
-                        </div>
-                    </CardProduct>
-                    <CardProduct className="d-flex flex-column align-items-center">
-                        <img src="/pepperoni.jpg" alt='Pepperoni' width={220} height={220}/>
-                        <h5>Pepperoni</h5>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley</p>
-                        <div className="d-flex flex-row justify-content-between align-items-center w-100">
-                            <p className="mb-0">R$ 24.90</p>
-                            <CustomButton variant="danger">Comprar</CustomButton>
-                        </div>
-                    </CardProduct>
-                    <CardProduct className="d-flex flex-column align-items-center">
-                        <img src="/pepperoni.jpg" alt='Pepperoni' width={220} height={220}/>
-                        <h5>Pepperoni</h5>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley</p>
-                        <div className="d-flex flex-row justify-content-between align-items-center w-100">
-                            <p className="mb-0">R$ 24.90</p>
-                            <CustomButton variant="danger">Comprar</CustomButton>
-                        </div>
-                    </CardProduct>
-                    <CardProduct className="d-flex flex-column align-items-center">
-                        <img src="/pepperoni.jpg" alt='Pepperoni' width={220} height={220}/>
-                        <h5>Pepperoni</h5>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley</p>
-                        <div className="d-flex flex-row justify-content-between align-items-center w-100">
-                            <p className="mb-0">R$ 24.90</p>
-                            <CustomButton variant="danger">Comprar</CustomButton>
-                        </div>
-                    </CardProduct>
-                </GridDiv>
+            <Container>
+                {!pizzas ? (
+                    <Loading />
+                ) : (
+                    <>
+                    <TitleH1 className="text-start my-3">Pizzas</TitleH1>
+                    <GridDiv>
+                        {pizzas.map((item:item) => (
+                            <CardProduct className="d-flex flex-column align-items-center" key={item.name}>
+                                <img src={item.image} alt={item.name} width={220} height={220}/>
+                                <h5>{item.name}</h5>
+                                <p>{item.description}</p>
+                                <div className="d-flex flex-row justify-content-between align-items-center w-100 mt-auto">
+                                    <p className="mb-0">{item.price}</p>
+                                    <CustomButton variant="danger">Comprar</CustomButton>
+                                </div>
+                            </CardProduct>
+                        ))}
+                    </GridDiv>
+                    </>
+                )}                
             </Container>
         </Layout>
     )
@@ -119,6 +83,7 @@ const CardProduct = styled.div`
     padding: 16px;
     max-width: 320px;
     display: grid;
+    justify-content: space-between;
     margin: 0 auto;
     &:hover{
         box-shadow: 0px 4px 30px rgba(71, 85, 114, 0.30);;
