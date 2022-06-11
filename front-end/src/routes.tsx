@@ -4,6 +4,7 @@ import { HomeView } from "./views/home";
 import { LoginView } from "./views/login";
 import { MenuView } from "./views/menu";
 import { NotFoundView } from "./views/notfound";
+import { CartView } from "./views/pagecart";
 
 export function Routes () {
   return (
@@ -29,6 +30,14 @@ export function Routes () {
         element={
           <LoadingUser>
             <MenuView />
+          </LoadingUser>
+        }
+      />
+      <Route 
+        path="/carrinho" 
+        element={
+          <LoadingUser>
+            <CartView />
           </LoadingUser>
         }
       />

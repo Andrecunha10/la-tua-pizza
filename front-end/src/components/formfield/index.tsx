@@ -37,17 +37,17 @@ export function FormField ({ controlId, label, error, visuallyHidden=true, mask,
 
 const StyledFormControl = styled(Form.Control)`
     background: #FFFFFF;
-    border: 1px solid var(--main-color);
     height: 45px;
     color: var(--text-color);
     font-weight: 500;
     ${props => props.borderRadius && `
         border-radius: 30px;
         height: 55px;
-    `}
-    &:focus{
+        border: 1px solid var(--main-color);
+        &:focus{
         box-shadow: 0px 0px 3px 3px rgba(207, 48, 49, 0.2);
         border: 1px solid var(--main-color);
         color: var(--text-color);
-    }
+        }
+    `}
 `

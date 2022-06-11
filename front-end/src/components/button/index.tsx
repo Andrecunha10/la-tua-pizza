@@ -54,7 +54,7 @@ const StyledButton = styled(Button)`
         }
     `}
     ${props => props.padding === 'sm' &&`
-        padding: 8px 24px;
+        padding: 5px 15px;
     `}
 `
 

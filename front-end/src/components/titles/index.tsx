@@ -14,7 +14,6 @@ export function TitleH1 ({children, ...props}:Props){
 const Title = styled.h2`
     font-weight: 900;
     color: var(--text-color);
-    text-align: center;
     font-size: 2rem;
 `
 

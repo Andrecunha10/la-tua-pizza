@@ -55,7 +55,7 @@ export function Login(){
             controlId: `input-${fildName}-login`,
             error: formik.errors[fildName],
             isInvalid: formik.touched[fildName] && !!formik.errors[fildName],
-            iaValid: formik.touched[fildName] && !!formik.errors[fildName]
+            isValid: formik.touched[fildName] && !formik.errors[fildName]
         }
     }
     if (isUserLoggendIn) {
