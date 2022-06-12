@@ -2,7 +2,6 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { TitleH1 } from "../../components/titles";
 import { IProduct } from "../../entities/product";
@@ -14,11 +13,9 @@ type IproductInCart = {
 
 export function YourOrder (  { products }:IproductInCart) {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const handleDelete = () => {
         dispatch(deleteToCart())
-        navigate('cardapio')
     }
 
     return(

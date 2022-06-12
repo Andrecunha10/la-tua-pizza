@@ -1,7 +1,7 @@
 import { Container } from "react-bootstrap";
 import { Layout } from "../../components/layout";
 import { TitleH1 } from "../../components/titles";
-import NotFound from "../../assts/img/404.jpg"
+import NotFound from "../../assts/img/404.svg"
 import styled from "styled-components";
 import { CustomButton, FirstPButton } from "../../components/button";
 
@@ -15,7 +15,6 @@ export function NotFoundView () {
                 <CustomButton padding="lg" to="/">
                     <FirstPButton>Voltar para a Home</FirstPButton>
                 </CustomButton>
-
             </Container>
         </Layout>
     )

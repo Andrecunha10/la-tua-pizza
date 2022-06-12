@@ -9,9 +9,8 @@ import { IProduct } from "../../entities/product";
 import { User } from "../../entities/user";
 import * as yup from 'yup'
 import { Form } from "react-bootstrap";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteToCart } from "../../store/slices/cardslices";
+
 type ICalculeteProps = {
     products: IProduct
     user: User
@@ -24,7 +23,6 @@ type FormValues = {
 }
 
 export function Calculate ({products, user}:ICalculeteProps) {
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     const formik = useFormik<FormValues>({
         initialValues:{
@@ -54,9 +52,9 @@ export function Calculate ({products, user}:ICalculeteProps) {
             isValid: formik.touched[fildName] && !formik.errors[fildName]
         }
     }
+
     const handleBack = () =>{
-        dispatch(deleteToCart())
-        navigate('/cardapio')
+        navigate(-1)
     }
     return (
         <>
