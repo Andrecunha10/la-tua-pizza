@@ -3,7 +3,7 @@ import { Form, FormControlProps } from "react-bootstrap";
 import { IMaskInput } from "react-imask";
 import styled from "styled-components";
 
-type Props = {
+export type IFormFieldProps = {
     controlId: string
     label: string
     error?: string
@@ -13,7 +13,7 @@ type Props = {
     borderRadius?: boolean
 } & FormControlProps & InputHTMLAttributes<HTMLInputElement>
 
-export function FormField ({ controlId, label, error, visuallyHidden=true, mask, onAccept, ...inputProps} : Props) {
+export function FormField ({ controlId, label, error, visuallyHidden=true, mask, onAccept, ...inputProps} : IFormFieldProps) {
     return (
         <Form.Group className="mb-3" controlId={controlId}>
             {label && <Form.Label visuallyHidden={visuallyHidden}>{label}</Form.Label>}

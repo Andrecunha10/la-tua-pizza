@@ -10,21 +10,27 @@ import { User } from "../../entities/user";
 import * as yup from 'yup'
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { AutoCompleteField } from "../../components/autocompletefiled";
+import { IAddress } from "../../entities/address";
+import { useState } from "react";
+import { createEstimate, INewEstimante } from "../../service/createestimate";
 
 type ICalculeteProps = {
     products: IProduct
     user: User
 }
 
-type FormValues = {
+type IFormValues = {
     name: string
     phone: string
-    address: string
+    address: IAddress | null
 }
 
 export function Calculate ({products, user}:ICalculeteProps) {
+    const [enableChangeAddress, setEnableChangeAddress] = useState(true)
+
     const navigate = useNavigate()
-    const formik = useFormik<FormValues>({
+    const formik = useFormik<IFormValues>({
         initialValues:{
             name: user.firstName,
             phone: user.phone,
@@ -36,14 +42,15 @@ export function Calculate ({products, user}:ICalculeteProps) {
             phone: yup.string()
                 .required('Telefone deve ser informado.')
                 .min(14, 'Informe um telefone válido'),
-            address: yup.string()
-                .required('Informe seu endereço')
+            address: yup.object()
+                .typeError('Selecione um endereço na lista.')
         }),
-        onSubmit: async() =>{
-
+        onSubmit: async(values) =>{
+            const estimate = await createEstimate(values as INewEstimante)
+            console.log(estimate)
         }
     })
-    const getFildProps = (fildName: keyof FormValues) =>{
+    const getFildProps = (fildName: keyof IFormValues) =>{
         return{
             ...formik.getFieldProps(fildName),
             controlId: `input-${fildName}`,
@@ -55,6 +62,14 @@ export function Calculate ({products, user}:ICalculeteProps) {
 
     const handleBack = () =>{
         navigate(-1)
+    }
+
+    const handleEnableChangeAddress = () => {
+        if(enableChangeAddress === true ) {
+            setEnableChangeAddress(false)
+        } else {
+            setEnableChangeAddress(true)
+        }
     }
     return (
         <>
@@ -83,11 +98,21 @@ export function Calculate ({products, user}:ICalculeteProps) {
                 </FormFieldWhitDispayGrid>
                 <FormFieldWhitDispayGrid>
                     <p>Endereço</p>
-                    <FormField
-                        label="Endereço"
-                        placeholder="Seu endereço"
-                        {...getFildProps('address')}
-                    />
+                    <div>
+                        <AutoCompleteField
+                            label="Endereço"
+                            placeholder={user.address?.address}
+                            {...getFildProps('address')}
+                            onChange={(address) => formik.setFieldValue('address', address)}
+                            disabled={enableChangeAddress}
+                        />
+                        <Form.Check 
+                            type="switch"
+                            id="custom-switch"
+                            label="Alterar o endereço"
+                            onChange={handleEnableChangeAddress}
+                        />
+                    </div>
                 </FormFieldWhitDispayGrid>
                 <Subtotal>Subtotal:<span className="ms-3">{products.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</span></Subtotal>
                 <div className="d-flex flex-column gap-3 flex-md-row justify-content-between">
@@ -102,6 +127,8 @@ export function Calculate ({products, user}:ICalculeteProps) {
                         padding="lg"
                         variant="danger"
                         type='submit'
+                        loading={formik.isValidating || formik.isSubmitting}
+                        disabled={formik.isValidating || formik.isSubmitting}
                     >CALCULAR FRETE</CustomButton>
                 </div>
             </Form>

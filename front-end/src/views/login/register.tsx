@@ -12,13 +12,15 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../store/slices/userslices";
 import { useNavigate } from "react-router-dom";
+import { AutoCompleteField } from "../../components/autocompletefiled";
+import { IAddress } from "../../entities/address";
 
-type FormValues = {
+type IFormValues = {
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
-    address: '',
+    address: IAddress | null,
     password: '',
     confirmpassword: '',
     agree: false
@@ -27,13 +29,13 @@ type FormValues = {
 export function Register (){
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const formik = useFormik<FormValues>({
+    const formik = useFormik<IFormValues>({
         initialValues: {
             firstName: '',
             lastName: '',
             email: '',
             phone: '',
-            address: '',
+            address: null,
             password: '',
             confirmpassword: '',
             agree: false
@@ -49,9 +51,7 @@ export function Register (){
             phone: yup.string()
                 .required('Preencha seu telefone.')
                 .min(14, 'Preencha um telefone válido.'),
-            address: yup.string()
-                .required('Preenha seu endereço de entregas.')
-                .min(10),
+            address: yup.object().typeError('Preencha um endereço da lista'),
             password: yup.string()
                 .required('É necessário criar uma senha.')
                 .min(6, 'Sua senha deve ter pelo menos 6 caractéres')
@@ -79,7 +79,7 @@ export function Register (){
             }
         }
     })
-    const getFieldProps = (fildName: keyof FormValues) => {
+    const getFieldProps = (fildName: keyof IFormValues) => {
         return{
             ...formik.getFieldProps(fildName),
             controlId: `input-${fildName}`,
@@ -118,10 +118,11 @@ export function Register (){
                     {...getFieldProps('phone')}
                     onAccept={value => formik.setFieldValue('phone', value)}
                 />
-                <FormField 
+                <AutoCompleteField
                     label="Endereço"
                     placeholder="Endereço *"
                     {...getFieldProps('address')}
+                    onChange={(address) => formik.setFieldValue('address', address)}
                 />
                 <FormField 
                     label="Senha"
