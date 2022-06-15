@@ -16,7 +16,9 @@ export const createEstimate = async ( input: INewEstimante ):Promise<IEstimate> 
     const estimateData = {
         time: minutes + 20,
         distance: parseFloat(kilometers.toFixed(2)),
-        value
+        value,
+        lat: input.address.lat,
+        lng: input.address.lng
     }
     return estimateData
 }

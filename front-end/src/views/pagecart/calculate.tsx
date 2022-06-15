@@ -12,8 +12,10 @@ import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AutoCompleteField } from "../../components/autocompletefiled";
 import { IAddress } from "../../entities/address";
-import { useState } from "react";
 import { createEstimate, INewEstimante } from "../../service/createestimate";
+import { useDispatch } from "react-redux";
+import { setCurrentEstimate, selectCurrentEstimanete, clearCurrenteEstimate } from "../../store/slices/estimateslice";
+import { useSelector } from "react-redux"
 
 type ICalculeteProps = {
     products: IProduct
@@ -27,8 +29,8 @@ type IFormValues = {
 }
 
 export function Calculate ({products, user}:ICalculeteProps) {
-    const [enableChangeAddress, setEnableChangeAddress] = useState(true)
-
+    const currentEstimate = useSelector(selectCurrentEstimanete)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const formik = useFormik<IFormValues>({
         initialValues:{
@@ -46,8 +48,14 @@ export function Calculate ({products, user}:ICalculeteProps) {
                 .typeError('Selecione um endereço na lista.')
         }),
         onSubmit: async(values) =>{
-            const estimate = await createEstimate(values as INewEstimante)
-            console.log(estimate)
+            if(!currentEstimate) {
+                const estimate = await createEstimate(values as INewEstimante)
+                dispatch(setCurrentEstimate(estimate))
+                navigate('/finalizar-pedido')
+            } else {
+                console.log('oi')
+            }
+            
         }
     })
     const getFildProps = (fildName: keyof IFormValues) =>{
@@ -56,26 +64,24 @@ export function Calculate ({products, user}:ICalculeteProps) {
             controlId: `input-${fildName}`,
             error: formik.errors[fildName],
             isInvalid: formik.touched[fildName] && !!formik.errors[fildName],
-            isValid: formik.touched[fildName] && !formik.errors[fildName]
+            isValid: formik.touched[fildName] && !formik.errors[fildName],
+            disabled: !!currentEstimate
         }
     }
 
     const handleBack = () =>{
-        navigate(-1)
-    }
-
-    const handleEnableChangeAddress = () => {
-        if(enableChangeAddress === true ) {
-            setEnableChangeAddress(false)
-        } else {
-            setEnableChangeAddress(true)
+        if (currentEstimate) {
+            dispatch(clearCurrenteEstimate())
         }
+        navigate(-1)
     }
     return (
         <>
-            <TitleH1 className="my-3">Calcular Frete</TitleH1>
+            {!currentEstimate &&
+                <TitleH1 className="my-3">Calcular Frete</TitleH1>
+            }            
             <Form onSubmit={formik.handleSubmit}>
-                <FormFieldWhitDispayGrid>
+                <FormFieldWhitDispayGrid className={`${currentEstimate ? ('d-block') : ('')}`}>
                     <p>Nome</p>
                     <FormField
                         label="Nome"
@@ -83,7 +89,7 @@ export function Calculate ({products, user}:ICalculeteProps) {
                         {...getFildProps('name')}
                     />
                 </FormFieldWhitDispayGrid>
-                <FormFieldWhitDispayGrid>
+                <FormFieldWhitDispayGrid className={`${currentEstimate ? ('d-block') : ('')}`}>
                     <p>Telefone</p>
                     <FormField
                         label="Telefone"
@@ -96,7 +102,7 @@ export function Calculate ({products, user}:ICalculeteProps) {
                         onAccept={value => formik.setFieldValue('phone', value)}
                     />
                 </FormFieldWhitDispayGrid>
-                <FormFieldWhitDispayGrid>
+                <FormFieldWhitDispayGrid className={`${currentEstimate ? ('d-block') : ('')}`}>
                     <p>Endereço</p>
                     <div>
                         <AutoCompleteField
@@ -104,17 +110,15 @@ export function Calculate ({products, user}:ICalculeteProps) {
                             placeholder={user.address?.address}
                             {...getFildProps('address')}
                             onChange={(address) => formik.setFieldValue('address', address)}
-                            disabled={enableChangeAddress}
-                        />
-                        <Form.Check 
-                            type="switch"
-                            id="custom-switch"
-                            label="Alterar o endereço"
-                            onChange={handleEnableChangeAddress}
                         />
                     </div>
                 </FormFieldWhitDispayGrid>
-                <Subtotal>Subtotal:<span className="ms-3">{products.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</span></Subtotal>
+                {!currentEstimate ? (
+                    <Subtotal>Subtotal:<span className="ms-3">{products.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</span></Subtotal>
+                ) : (
+                    <Subtotal>Total:<span className="ms-3">{(products.price + currentEstimate.value).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</span></Subtotal>
+                )}
+                
                 <div className="d-flex flex-column gap-3 flex-md-row justify-content-between">
                     <CustomButton 
                         padding="lg"
@@ -123,13 +127,24 @@ export function Calculate ({products, user}:ICalculeteProps) {
                     >
                         <FontAwesomeIcon icon={faArrowLeft} className='me-4 me-md-5'/>VOLTAR
                     </CustomButton>
-                    <CustomButton
-                        padding="lg"
-                        variant="danger"
-                        type='submit'
-                        loading={formik.isValidating || formik.isSubmitting}
-                        disabled={formik.isValidating || formik.isSubmitting}
-                    >CALCULAR FRETE</CustomButton>
+                    {!currentEstimate ? (
+                        <CustomButton
+                            padding="lg"
+                            variant="danger"
+                            type='submit'
+                            loading={formik.isValidating || formik.isSubmitting}
+                            disabled={formik.isValidating || formik.isSubmitting}
+                        >CALCULAR FRETE</CustomButton>
+                    ) : (
+                        <CustomButton
+                            padding="lg"
+                            variant="danger"
+                            type='submit'
+                            loading={formik.isValidating || formik.isSubmitting}
+                            disabled={formik.isValidating || formik.isSubmitting}
+                        >Finalizar Pedido</CustomButton>
+                    )}
+                    
                 </div>
             </Form>
         </>

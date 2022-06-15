@@ -1,5 +1,6 @@
 import { Route, Routes as RDRoutes } from "react-router-dom";
 import { LoadingUser } from "./components/loadinguser";
+import { FinalizeOrderView } from "./views/finalizeorder";
 import { HomeView } from "./views/home";
 import { LoginView } from "./views/login";
 import { MenuView } from "./views/menu";
@@ -38,6 +39,14 @@ export function Routes () {
         element={
           <LoadingUser>
             <CartView />
+          </LoadingUser>
+        }
+      />
+      <Route 
+        path="/finalizar-pedido" 
+        element={
+          <LoadingUser>
+            <FinalizeOrderView />
           </LoadingUser>
         }
       />
