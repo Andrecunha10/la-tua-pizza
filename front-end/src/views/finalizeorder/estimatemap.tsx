@@ -1,57 +1,76 @@
 import { LoadGoogleScript } from "../../components/loadgooglescript";
 import { GoogleMap, MarkerF } from "@react-google-maps/api"
-import { useSelector } from "react-redux";
-import { selectCurrentEstimanete } from "../../store/slices/estimateslice";
 import { MyAddress } from "../../service/calculatedistance";
 import pinB from "../../assts/img/point_b.svg"
-import  pinPizza from "../../assts/img/pin_pizza.svg"
+import pinPizza from "../../assts/img/pin_pizza.svg"
+import styled from "styled-components";
+import { IEstimate } from "../../entities/estimante";
 
-export function EstimateMap () {
-    const currentEstimate = useSelector(selectCurrentEstimanete)
+type IProps = {
+    currentEstimate: IEstimate
+}
+
+export function EstimateMap( { currentEstimate }: IProps) {
     const handleLoadMap = (map: google.maps.Map) => {
-        if (!currentEstimate) {
-            return
-        }
-       const bounds = new google.maps.LatLngBounds()
-       bounds.extend({
+        const bounds = new google.maps.LatLngBounds()
+        bounds.extend({
             lat: MyAddress.lat,
             lng: MyAddress.lng
-       })
-       bounds.extend({
+        })
+        bounds.extend({
             lat: currentEstimate.lat,
             lng: currentEstimate.lng
-       })
-       map.setCenter(bounds.getCenter())
-       map.fitBounds(bounds)
+        })
+        map.setCenter(bounds.getCenter())
+        map.fitBounds(bounds)
     }
-    if (!currentEstimate) {
-        return null
-    }
-   return (
-       <LoadGoogleScript>
-           <GoogleMap 
-            mapContainerStyle={{
-                minHeight: 150
-            }}
-            center={{lat: 0, lng: 0}}
-            zoom={16}
-            onLoad={handleLoadMap}
-           >
-               <MarkerF 
-                    position={{
-                        lat: MyAddress.lat,
-                        lng: MyAddress.lng
+    return (
+        <LoadGoogleScript>
+            <DivGoogleMap className="mt-3 mt-md-0">
+                <GoogleMap
+                    mapContainerStyle={{
+                        minHeight: 250
                     }}
-                    icon={pinPizza}
-               />
-               <MarkerF 
-                    position={{
-                        lat: currentEstimate.lat,
-                        lng: currentEstimate.lng
+                    center={{ lat: 0, lng: 0 }}
+                    zoom={16}
+                    onLoad={handleLoadMap}
+                    options={{
+                        disableDefaultUI: true
                     }}
-                    icon={pinB}
-               />
-           </GoogleMap>
-       </LoadGoogleScript>
-   ) 
+                >
+                    <MarkerF
+                        position={{
+                            lat: MyAddress.lat,
+                            lng: MyAddress.lng
+                        }}
+                        icon={pinPizza}
+                    />
+                    <MarkerF
+                        position={{
+                            lat: currentEstimate.lat,
+                            lng: currentEstimate.lng
+                        }}
+                        icon={pinB}
+                    />
+                </GoogleMap>
+            </DivGoogleMap>
+        </LoadGoogleScript>
+    )
 }
+
+const DivGoogleMap = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    & > div {
+        flex: 1;
+    }
+    a[href^="http://maps.google.com/maps"]{display:none !important}
+    a[href^="https://maps.google.com/maps"]{display:none !important}
+    .gmnoprint a, .gmnoprint span, .gm-style-cc {
+        display:none;
+    }
+    .gmnoprint div {
+        background:none !important;
+    }
+`

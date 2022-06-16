@@ -14,12 +14,13 @@ import { AutoCompleteField } from "../../components/autocompletefiled";
 import { IAddress } from "../../entities/address";
 import { createEstimate, INewEstimante } from "../../service/createestimate";
 import { useDispatch } from "react-redux";
-import { setCurrentEstimate, selectCurrentEstimanete, clearCurrenteEstimate } from "../../store/slices/estimateslice";
-import { useSelector } from "react-redux"
+import { setCurrentEstimate, clearCurrenteEstimate } from "../../store/slices/estimateslice";
+import { IEstimate } from "../../entities/estimante";
 
 type ICalculeteProps = {
     products: IProduct
     user: User
+    currentEstimate?: IEstimate
 }
 
 type IFormValues = {
@@ -28,8 +29,7 @@ type IFormValues = {
     address: IAddress | null
 }
 
-export function Calculate ({products, user}:ICalculeteProps) {
-    const currentEstimate = useSelector(selectCurrentEstimanete)
+export function Calculate ({products, user, currentEstimate}:ICalculeteProps) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const formik = useFormik<IFormValues>({
@@ -82,7 +82,7 @@ export function Calculate ({products, user}:ICalculeteProps) {
             }            
             <Form onSubmit={formik.handleSubmit}>
                 <FormFieldWhitDispayGrid className={`${currentEstimate ? ('d-block') : ('')}`}>
-                    <p>Nome</p>
+                    <p className="mb-1">Nome</p>
                     <FormField
                         label="Nome"
                         placeholder="Seu Nome"
@@ -90,7 +90,7 @@ export function Calculate ({products, user}:ICalculeteProps) {
                     />
                 </FormFieldWhitDispayGrid>
                 <FormFieldWhitDispayGrid className={`${currentEstimate ? ('d-block') : ('')}`}>
-                    <p>Telefone</p>
+                    <p className="mb-1">Telefone</p>
                     <FormField
                         label="Telefone"
                         placeholder="Seu Telefone"
@@ -103,7 +103,7 @@ export function Calculate ({products, user}:ICalculeteProps) {
                     />
                 </FormFieldWhitDispayGrid>
                 <FormFieldWhitDispayGrid className={`${currentEstimate ? ('d-block') : ('')}`}>
-                    <p>Endereço</p>
+                    <p className="mb-1">Endereço</p>
                     <div>
                         <AutoCompleteField
                             label="Endereço"
