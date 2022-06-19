@@ -1,6 +1,6 @@
 
 import { signInWithEmailAndPassword } from "firebase/auth"
-import { User } from "../entities/user"
+import { IUser } from "../entities/user"
 import { auth } from "./firebase"
 import { getUser } from "./getuser"
 
@@ -9,7 +9,7 @@ type Credentials = {
     password: string
 }
 
-export const loginUser = async ( { email, password }: Credentials): Promise<User> =>{
+export const loginUser = async ( { email, password }: Credentials): Promise<IUser> =>{
    const result = await signInWithEmailAndPassword(auth, email, password)
    return getUser(result.user.uid)
 }

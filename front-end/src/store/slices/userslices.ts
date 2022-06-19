@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../../entities/user";
+import { IUser } from "../../entities/user";
 import { RootState } from "../store";
 
 type Userstate = {
     loadingUser: boolean,
-    user: User | null
+    user: IUser | null
 }
 
 const initialState: Userstate = {
@@ -16,7 +16,7 @@ const slice = createSlice({
     name: 'user',
     initialState,
     reducers:{
-        updateUser: (state, action: PayloadAction<User>) => {
+        updateUser: (state, action: PayloadAction<IUser>) => {
             state.loadingUser = false
             state.user= action.payload
         },

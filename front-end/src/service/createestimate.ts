@@ -4,12 +4,11 @@ import { calculateDistance } from "./calculatedistance"
 
 export type INewEstimante = {
     address: IAddress
-    name: string
-    phone: string
+    subtotal: number
 }
 
-export const createEstimate = async ( input: INewEstimante ):Promise<IEstimate> => {
-    const {distance, duration} = await calculateDistance(input.address)
+export const createEstimate = async ( { address, subtotal }: INewEstimante ):Promise<IEstimate> => {
+    const {distance, duration} = await calculateDistance(address)
     const minutes = Math.ceil(duration / 60)
     const value = calculateValue(distance, minutes)
     const kilometers = distance / 1000
@@ -17,8 +16,10 @@ export const createEstimate = async ( input: INewEstimante ):Promise<IEstimate> 
         time: minutes + 20,
         distance: parseFloat(kilometers.toFixed(2)),
         value,
-        lat: input.address.lat,
-        lng: input.address.lng
+        valueTotal: subtotal + value,
+        lat: address.lat,
+        lng: address.lng,
+        deliveryAddress: address.address
     }
     return estimateData
 }

@@ -5,6 +5,7 @@ import { HomeView } from "./views/home";
 import { LoginView } from "./views/login";
 import { MenuView } from "./views/menu";
 import { NotFoundView } from "./views/notfound";
+import { OrderSuccessView } from "./views/ordersuccess";
 import { CartView } from "./views/pagecart";
 
 export function Routes () {
@@ -47,6 +48,14 @@ export function Routes () {
         element={
           <LoadingUser>
             <FinalizeOrderView />
+          </LoadingUser>
+        }
+      />
+      <Route 
+        path="/pedido-sucesso" 
+        element={
+          <LoadingUser>
+            <OrderSuccessView />
           </LoadingUser>
         }
       />

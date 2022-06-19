@@ -1,6 +1,6 @@
 import { IAddress } from "./address"
 
-export type User =  {
+export type IUser =  {
     id: string,
     firstName: string
     lastName: string

@@ -6,9 +6,9 @@ import { CustomButton } from "../../components/button";
 import { FormField } from "../../components/formfield";
 import { TitleH1 } from "../../components/titles";
 import { IProduct } from "../../entities/product";
-import { User } from "../../entities/user";
+import { IUser } from "../../entities/user";
 import * as yup from 'yup'
-import { Form } from "react-bootstrap";
+import { Form, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AutoCompleteField } from "../../components/autocompletefiled";
 import { IAddress } from "../../entities/address";
@@ -16,10 +16,14 @@ import { createEstimate, INewEstimante } from "../../service/createestimate";
 import { useDispatch } from "react-redux";
 import { setCurrentEstimate, clearCurrenteEstimate } from "../../store/slices/estimateslice";
 import { IEstimate } from "../../entities/estimante";
+import { EstimateFinish } from "../finalizeorder/estimatefinish";
+import { useState } from "react";
+import { createOrder } from "../../service/createorder";
+import { toast } from "react-toastify";
 
 type ICalculeteProps = {
     products: IProduct
-    user: User
+    user: IUser
     currentEstimate?: IEstimate
 }
 
@@ -32,6 +36,7 @@ type IFormValues = {
 export function Calculate ({products, user, currentEstimate}:ICalculeteProps) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [show, setShow] = useState(false);
     const formik = useFormik<IFormValues>({
         initialValues:{
             name: user.firstName,
@@ -47,15 +52,16 @@ export function Calculate ({products, user, currentEstimate}:ICalculeteProps) {
             address: yup.object()
                 .typeError('Selecione um endereço na lista.')
         }),
-        onSubmit: async(values) =>{
+        onSubmit: async({address}) =>{
+            const values = {
+                address,
+                subtotal: products.price
+            }
             if(!currentEstimate) {
                 const estimate = await createEstimate(values as INewEstimante)
                 dispatch(setCurrentEstimate(estimate))
                 navigate('/finalizar-pedido')
-            } else {
-                console.log('oi')
-            }
-            
+            }           
         }
     })
     const getFildProps = (fildName: keyof IFormValues) =>{
@@ -75,6 +81,27 @@ export function Calculate ({products, user, currentEstimate}:ICalculeteProps) {
         }
         navigate(-1)
     }
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const PayOnDelivery = async () => {
+        if (!currentEstimate) {
+            return null
+        }
+        try {
+            await createOrder({
+                estimate: currentEstimate,
+                gatewayId: 'Pagar na engrega',
+                user: user
+            })
+            navigate('/pedido-sucesso')            
+        } catch {
+            toast.error('Falha ao processar seu pedido. Por favor, entre em contato conosco.', {
+                theme: 'colored'
+            })
+        }
+    }
+    
     return (
         <>
             {!currentEstimate &&
@@ -139,14 +166,34 @@ export function Calculate ({products, user, currentEstimate}:ICalculeteProps) {
                         <CustomButton
                             padding="lg"
                             variant="danger"
-                            type='submit'
                             loading={formik.isValidating || formik.isSubmitting}
                             disabled={formik.isValidating || formik.isSubmitting}
-                        >Finalizar Pedido</CustomButton>
-                    )}
-                    
+                            onClick={handleShow}
+                        >Finalizar Pedido</CustomButton> 
+                    )}                    
                 </div>
             </Form>
+            <>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Finalizar o Pedido</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Como deseja realizar o pagamento?</Modal.Body>
+                <Modal.Footer className="justify-content-between">
+                    <div className="d-grid w-100">
+                        <CustomButton variant="outline-danger" onClick={PayOnDelivery}>
+                            Pagar na entrega?
+                        </CustomButton>
+                    </div>                
+                    {!currentEstimate ? (null) : (
+                        <EstimateFinish 
+                            currentEstimate={currentEstimate}
+                            user={user}
+                        />  
+                    )}
+                </Modal.Footer>
+            </Modal>
+    </>
         </>
     )
 }
