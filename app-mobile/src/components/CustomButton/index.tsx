@@ -13,12 +13,13 @@ export function CustomButton ({
     variant = 'red', 
     size = 'sm',
     loading = false,
-    disabled, 
+    disabled = false, 
     ...otherProps
 }: IProps) {
     return (
         <TouchableOpacity 
             {...otherProps} 
+            disabled={disabled}
             style={[
                 styles.base, 
                 styles[variant], 

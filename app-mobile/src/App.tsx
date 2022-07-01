@@ -1,8 +1,13 @@
 import React from "react";
-import { HomeView } from "./views/home";
+import { NavigationContainer } from '@react-navigation/native';
+import { Routes } from "./routes";
+import { StatusBar } from "react-native";
 
 export default function App () {
     return (
-        <HomeView />
+        <NavigationContainer>
+            <StatusBar backgroundColor="#CF3031" barStyle={"light-content"} />
+            <Routes />
+        </NavigationContainer>
     )
 }

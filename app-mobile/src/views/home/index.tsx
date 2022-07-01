@@ -4,14 +4,22 @@ import LogoMobile from "../../assets/img/logo_mobile.svg"
 import Delivery from "../../assets/img/home_image.svg"
 import { CustomButton } from "../../components/CustomButton";
 import { CustomText } from "../../components/CustomText";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { IRootStackParamList } from "../../routes";
 
-export function HomeView () {
+type IProps = NativeStackScreenProps<IRootStackParamList, 'Home'>
+
+export function HomeView ({ navigation }: IProps ) {
+    const handlePressLogin = () => {
+        navigation.navigate('Login')
+    }
+
     return (
         <View style={styles.container}>
             <SafeAreaView style={styles.view}>
                 <LogoMobile />
                 <Delivery />
-                <CustomButton variant="white" size="lg">
+                <CustomButton variant="white" size="lg" onPress={handlePressLogin}>
                     <View style={styles.viewButton}>
                         <CustomText style={[styles.textButton, styles.textButtonLineOne]} weight='Roboto-Bold'>Pedido Online</CustomText>
                         <CustomText style={styles.textButton}>Faça Login</CustomText>
