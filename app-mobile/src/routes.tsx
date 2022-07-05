@@ -12,7 +12,17 @@ const Stack = createNativeStackNavigator<IRootStackParamList>()
 
 export function Routes () {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#CF3031',
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    fontFamily: 'Roboto-Bold'
+                }
+            }}
+        >
             <Stack.Screen 
                 name="Home" 
                 component={HomeView} 
@@ -23,6 +33,9 @@ export function Routes () {
             <Stack.Screen 
                 name="Login" 
                 component={LoginView}
+                options={{
+                    title: 'Entrar no sistema',
+                }}
             />
         </Stack.Navigator>
     )

@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',        
     },
     lg: {
-        borderRadius: 25,
+        borderRadius: 20,
         paddingHorizontal: 50,
         paddingVertical: 12,
     },
