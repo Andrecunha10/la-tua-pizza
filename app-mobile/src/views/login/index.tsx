@@ -5,6 +5,7 @@ import { Container } from "../../components/Container";
 import { CustomButton } from "../../components/CustomButton";
 import { FormField } from "../../components/FormField";
 import * as yup from 'yup';
+import { loginUser } from "../../services/loginuser";
 
 export function LoginView() {
     const formik = useFormik({
@@ -20,7 +21,12 @@ export function LoginView() {
                 .required('Informe sua senha')
         }),
         onSubmit: async (values) => {
-            console.log(values)
+            try {
+                const result = await loginUser(values)
+                console.log('result', result)
+            } catch (error){
+                console.log(error)
+            }
         }
     })
     const getFieldProps = (fieldName: 'email' | 'password') => ({
@@ -49,6 +55,8 @@ export function LoginView() {
                 <CustomButton 
                     size="lg" 
                     onPress={formik.handleSubmit}
+                    loading={formik.isSubmitting || formik.isValidating}
+                    disabled={formik.isSubmitting || formik.isValidating}
                 >Entrar</CustomButton>
             </View>
         </Container>

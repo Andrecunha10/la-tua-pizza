@@ -31,7 +31,6 @@ export function CustomButton ({
                     style={styles.loading}
                     
                     color={variant==="white" ? "#CF3031" : "#fff"}
-                    size={size==="lg" ? 'large' : 'small'}
                 />
             )}             
             <CustomText style={[variant==='red' ? {color: '#fff'} : {color: '#CF3031'}]}>

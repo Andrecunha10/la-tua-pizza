@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "823812490416",
+    "project_id": "la-tua-pizza-alc",
+    "storage_bucket": "la-tua-pizza-alc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823812490416:android:5b7bede9b3e250f551a775",
+        "android_client_info": {
+          "package_name": "com.appmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823812490416-efbsfkvas4fa7r16lnfa1vif8haht0pj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe7SAEgJqnZNhuBekEpLGifAyIbUUwtUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823812490416-efbsfkvas4fa7r16lnfa1vif8haht0pj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
