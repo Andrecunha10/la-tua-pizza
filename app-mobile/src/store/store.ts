@@ -8,6 +8,15 @@ const store = configureStore({
         userData: userReducer,
         cartData: cartReducer,
         estimateData: estimateReducer
+    },
+    middleware: (getDefaultMiddlewares) => {
+        const middleware = getDefaultMiddlewares()
+
+        if (__DEV__) {
+            const createDebugger = require('redux-flipper').default
+            middleware.push(createDebugger())
+        }
+        return middleware
     }
 })
 

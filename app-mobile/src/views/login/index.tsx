@@ -10,10 +10,13 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { IRootStackParamList } from "../../routes";
 import Toast from 'react-native-toast-message';
 import { isNativeFirebaseAuthError } from "../../utils/isNativeFirebaseAuthError";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../../store/slices/userslices";
 
 type IProps = NativeStackScreenProps<IRootStackParamList, 'Login'>
 
 export function LoginView( { navigation }: IProps) {
+    const dispatch = useDispatch()
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -29,7 +32,7 @@ export function LoginView( { navigation }: IProps) {
         onSubmit: async (values) => {
             try {
                 const user = await loginUser(values)
-                console.log('user', user)
+                dispatch(updateUser(user))
                 navigation.navigate('Content')
             } catch (error){
                 const errorMsg = isNativeFirebaseAuthError(error) && (error.code ==='auth/user-not-found' || error.code === 'auth/wrong-password')
