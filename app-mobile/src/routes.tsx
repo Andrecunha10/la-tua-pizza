@@ -6,8 +6,10 @@ import { ContentView } from "./views/content";
 import auth from '@react-native-firebase/auth';
 import { current } from "@reduxjs/toolkit";
 import { getUser } from "./services/getuser";
-import { useDispatch } from "react-redux";
-import { deleteUser, updateUser } from "./store/slices/userslices";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteUser, selecIsLoadingUser, selectIsUserLoggedIn, updateUser } from "./store/slices/userslices";
+import { LogoutButton } from "./components/logoutButton";
+import { Loading } from "./components/loading";
 
 export type IRootStackParamList = {
     Home: undefined
@@ -29,6 +31,11 @@ export function Routes () {
             }
         })
     }, [])
+    const isUserloggedin = useSelector(selectIsUserLoggedIn)
+    const isLoadingUser = useSelector(selecIsLoadingUser)
+    if (isLoadingUser) {
+        return <Loading />
+    }    
     return (
         <Stack.Navigator
             screenOptions={{
@@ -41,27 +48,33 @@ export function Routes () {
                 }
             }}
         >
-            <Stack.Screen 
-                name="Home" 
-                component={HomeView} 
-                options={{
-                    headerShown: false
-                }}
-            />
-            <Stack.Screen 
-                name="Login" 
-                component={LoginView}
-                options={{
-                    title: 'Entrar no sistema',
-                }}
-            />
-            <Stack.Screen 
-                name="Content" 
-                component={ContentView}
-                options={{
-                    title: 'Meus Pedidos',
-                }}
-            />
+            {!isUserloggedin ? (
+                <>
+                    <Stack.Screen 
+                        name="Home" 
+                        component={HomeView} 
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                    <Stack.Screen 
+                        name="Login" 
+                        component={LoginView}
+                        options={{
+                            title: 'Entrar no sistema',
+                        }}
+                    />
+                </>
+            ) : (
+                <Stack.Screen 
+                    name="Content" 
+                    component={ContentView}
+                    options={{
+                        title: 'Meus Pedidos',
+                        headerRight: () => <LogoutButton />
+                    }}
+                />
+            )}                       
         </Stack.Navigator>
     )
 }
