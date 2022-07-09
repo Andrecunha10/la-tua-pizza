@@ -21,15 +21,15 @@ export function LogoutButton () {
                 }
             }]
             )
-        
     }
     return <TouchableOpacity onPress={handleLogout} style={styles.loagoutButton}>
-        <FontAwesomeIcon icon={faRightFromBracket} color='#fff' size={22}/> 
+        <FontAwesomeIcon icon={faRightFromBracket} color='#fff' size={24}/> 
     </TouchableOpacity>
 }
 
 const styles = StyleSheet.create({
     loagoutButton: {
-        padding: 8
+        padding: 6,
+        paddingEnd: 16
     }
 })

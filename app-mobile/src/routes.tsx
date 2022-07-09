@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeView } from "./views/home";
 import { LoginView } from "./views/login";
-import { ContentView } from "./views/content";
+import { ContentsView } from "./views/contents";
 import auth from '@react-native-firebase/auth';
-import { current } from "@reduxjs/toolkit";
 import { getUser } from "./services/getuser";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, selecIsLoadingUser, selectIsUserLoggedIn, updateUser } from "./store/slices/userslices";
@@ -14,7 +13,7 @@ import { Loading } from "./components/loading";
 export type IRootStackParamList = {
     Home: undefined
     Login: undefined
-    Content: undefined
+    Contents: undefined
 }
 
 const Stack = createNativeStackNavigator<IRootStackParamList>()
@@ -67,11 +66,10 @@ export function Routes () {
                 </>
             ) : (
                 <Stack.Screen 
-                    name="Content" 
-                    component={ContentView}
+                    name="Contents" 
+                    component={ContentsView}
                     options={{
-                        title: 'Meus Pedidos',
-                        headerRight: () => <LogoutButton />
+                        headerShown: false
                     }}
                 />
             )}                       

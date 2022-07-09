@@ -33,7 +33,7 @@ export function LoginView( { navigation }: IProps) {
             try {
                 const user = await loginUser(values)
                 dispatch(updateUser(user))
-                navigation.navigate('Content')
+                navigation.navigate('Contents')
             } catch (error){
                 const errorMsg = isNativeFirebaseAuthError(error) && (error.code ==='auth/user-not-found' || error.code === 'auth/wrong-password')
                 ? 'Login ou senha inválidos'
