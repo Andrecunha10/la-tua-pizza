@@ -6,20 +6,23 @@ import { OrderResponseBody } from "@paypal/paypal-js"
 import { PayPalButton } from "../../components/paypalbutton"
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
+import { IProduct } from "../../entities/product"
 
 type IEstimenteFinish = {
     user: IUser
     currentEstimate: IEstimate
+    product: IProduct
 }
 
-export function EstimateFinish({ user, currentEstimate }: IEstimenteFinish) {
+export function EstimateFinish({ user, currentEstimate, product }: IEstimenteFinish) {
     const navigate = useNavigate()
     const handlePayPalSucess = async (details: OrderResponseBody) => {
         try {
             await createOrder({
                 estimate: currentEstimate,
                 gatewayId: details.id,
-                user: user
+                user: user,
+                product: product
             })
             navigate('/pedido-sucesso')            
         } catch {

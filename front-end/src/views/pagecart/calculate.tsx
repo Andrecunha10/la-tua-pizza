@@ -92,7 +92,8 @@ export function Calculate ({products, user, currentEstimate}:ICalculeteProps) {
             await createOrder({
                 estimate: currentEstimate,
                 gatewayId: 'Pagar na engrega',
-                user: user
+                user: user,
+                product: products
             })
             navigate('/pedido-sucesso')            
         } catch {
@@ -189,6 +190,7 @@ export function Calculate ({products, user, currentEstimate}:ICalculeteProps) {
                         <EstimateFinish 
                             currentEstimate={currentEstimate}
                             user={user}
+                            product={products}
                         />  
                     )}
                 </Modal.Footer>
