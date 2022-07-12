@@ -1,6 +1,5 @@
 import { faRectangleList} from "@fortawesome/free-regular-svg-icons/faRectangleList";
 import { faPizzaSlice } from "@fortawesome/free-solid-svg-icons/faPizzaSlice";
-import { faOpencart } from "@fortawesome/free-brands-svg-icons/faOpencart";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { useEffect } from "react";

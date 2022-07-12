@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { IUserOrders } from "../../entities/userorders";
 import { CustomText } from "../CustomText";
+import { OrderModal } from "../modal";
 
 
 type IProps = {
@@ -9,15 +10,20 @@ type IProps = {
 }
 
 export function MyOrdersCard( { order }:IProps ) {
+    const [visible, setVisible] = useState(false)
+
     const id = `${order.id.substring(0, 4)}-${order.id.substring(4)}`
     return (
-        <TouchableOpacity style={style.card}>
-            <View style={style.view}>
-                <CustomText weight='Roboto-Bold'>Pedido: </CustomText>
-                <CustomText>#{id}</CustomText>
-            </View> 
-            <CustomText style={style.size}>{order.createdAt}</CustomText>
-        </TouchableOpacity>
+        <>
+            <TouchableOpacity style={style.card} onPress={() => setVisible(true)}>
+                <View style={style.view}>
+                    <CustomText weight='Roboto-Bold'>Pedido: </CustomText>
+                    <CustomText>#{id}</CustomText>
+                </View> 
+                <CustomText style={style.size}>{order.createdAt}</CustomText>
+            </TouchableOpacity>
+            <OrderModal order={order} visible={visible} onRequestClose={() => setVisible(false)}/>
+        </>
     )
 }
 
