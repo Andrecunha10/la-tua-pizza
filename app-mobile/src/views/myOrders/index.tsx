@@ -6,7 +6,10 @@ import { Loading } from "../../components/loading";
 import { selectLoadOrderInfo, selectUserOrder } from "../../store/slices/userOrderSlices";
 import { LoadingStatus } from "../../entities/loadingstatus";
 import { CustomAlert } from "../../components/customAlert";
-import { MyOrdersCard } from "../../components/card/myOrdersCard";
+import { MyOrdersCard } from "../../components/cards/myOrdersCard";
+import { FlatList, StyleSheet, View } from "react-native";
+import Pizza from "../../assets/img/pizza.svg"
+import { IUserOrders } from "../../entities/userorders";
 
 export function MyOrdersView() {
     const userOrders = useSelector(selectUserOrder)
@@ -23,16 +26,39 @@ export function MyOrdersView() {
         );
       }
     return (
-        <Container padding>
-            {userOrders.length < 0 ? (
-                <CustomText>Você não tem pedidos</CustomText>
+        <Container>
+            {!userOrders ? (
+                <View style={style.notOrders}>
+                    <View style={style.view}>
+                        <Pizza width={150} height={150}/>
+                        <CustomText style={style.text} weight="Roboto-Black">Você ainda não tem pedidos</CustomText>
+                    </View>
+                </View>
             ) : (
-                <>
-                {userOrders.map(order => (
-                    <MyOrdersCard key={order.id} order={order}/>
-                ))}
-                </>
+                <FlatList
+                    data={userOrders}
+                    renderItem={({ item }: { item: IUserOrders }) => <MyOrdersCard order={item} />}
+                    contentContainerStyle={style.flatlist}
+                />
             )}            
         </Container>
     )
 }
+
+const style = StyleSheet.create({
+    notOrders: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: 'center'
+    },
+    view:{
+        alignItems: 'center',
+    },
+    text: {
+        fontSize: 22,
+        marginTop: 16
+    },
+    flatlist: {
+        padding: 16
+    }
+})

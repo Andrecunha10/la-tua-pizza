@@ -4,6 +4,8 @@ import { CustomText } from "../../components/CustomText";
 import { IProduct } from "../../entities/product";
 import { getProducts } from "../../services/getproducts";
 import Toast from 'react-native-toast-message';
+import { CardProduct } from "../../components/cards/productCard";
+import { FlatList } from "react-native";
 
 export function MenuView () {
     const [products, setProducts] = useState<IProduct[]>()
@@ -22,10 +24,14 @@ export function MenuView () {
         }
         fetchProducts()
     }, [])
-    console.log('produtos1', products)
     return(
         <Container>
-            <CustomText>Cardápio</CustomText>
+            <FlatList 
+                data={products}
+                renderItem={({ item }: { item: IProduct }) => <CardProduct product={item}/>}
+                contentContainerStyle={{padding: 16}}
+            />
+            
         </Container>
     )
 }

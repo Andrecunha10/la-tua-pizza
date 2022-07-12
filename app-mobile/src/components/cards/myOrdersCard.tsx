@@ -24,12 +24,13 @@ export function MyOrdersCard( { order }:IProps ) {
             </TouchableOpacity>
             <OrderModal order={order} visible={visible} onRequestClose={() => setVisible(false)}/>
         </>
+        
     )
 }
 
 const style = StyleSheet.create({
     card: {
-        borderColor: '#d9d9d9',
+        borderColor: '#9f9f9f',
         borderWidth: 1,
         marginBottom: 16,
         padding: 15,

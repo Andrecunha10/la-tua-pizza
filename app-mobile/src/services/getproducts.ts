@@ -3,7 +3,7 @@ import { IProduct } from "../entities/product";
 
 export const getProducts = async () => {
     const productsSnapshot: IProduct[] = []
-    const doc = await firestore()
+    await firestore()
         .collection('pizzas')
         .get()
         .then(querySnapshot => {
