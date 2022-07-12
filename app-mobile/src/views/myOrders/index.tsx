@@ -1,37 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Container } from "../../components/Container";
 import { CustomText } from "../../components/CustomText";
-import { IUserOrders } from "../../entities/userorders";
-import { getOrders } from "../../services/getorders";
-import { selectUser } from "../../store/slices/userslices";
-import Toast from 'react-native-toast-message';
+import { Loading } from "../../components/loading";
+import { selectLoadOrderInfo, selectUserOrder } from "../../store/slices/userOrderSlices";
+import { LoadingStatus } from "../../entities/loadingstatus";
+import { CustomAlert } from "../../components/customAlert";
+import { MyOrdersCard } from "../../components/card/myOrdersCard";
 
 export function MyOrdersView() {
-    const [myOrder, setMyOrders] = useState<IUserOrders[]>()
-    const user = useSelector(selectUser)
-    if (!user) {
-        return null
-    }
-    useEffect( () => {
-        const fecthOrders = async () => {
-            try {
-                const userOrders = await getOrders(user.id)
-                setMyOrders(userOrders) 
-            } catch {
-                Toast.show({
-                    type: 'error',
-                    text1: 'Falha ao carregar seus pedidos!',
-                    text2: 'A conexão com o servidor falhou, tente novamente.'
-                })
-            }
-            
-        }
-        fecthOrders()
-    }, [])
+    const userOrders = useSelector(selectUserOrder)
+    const {status} = useSelector(selectLoadOrderInfo)
+
+    if (status === LoadingStatus.loading) {
+        return <Loading />;
+      }
+      if (status === LoadingStatus.failed) {
+        return (
+          <Container padding>
+            <CustomAlert>Falha ao buscar seus pedidos.</CustomAlert>
+          </Container>
+        );
+      }
     return (
-        <Container>
-            <CustomText>Meus Pedidos</CustomText>
+        <Container padding>
+            {userOrders.length < 0 ? (
+                <CustomText>Você não tem pedidos</CustomText>
+            ) : (
+                <>
+                {userOrders.map(order => (
+                    <MyOrdersCard key={order.id} order={order}/>
+                ))}
+                </>
+            )}            
         </Container>
     )
 }

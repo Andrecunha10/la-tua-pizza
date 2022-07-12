@@ -9,7 +9,8 @@ export function CustomText ({style, weight, ...props}:IProps) {
     const styles = StyleSheet.create({
         text: {
             fontFamily: 'Roboto-Regular',
-            fontSize: 16
+            fontSize: 16,
+            color: "#333"
         },
         weight:{
             fontFamily: weight,
@@ -18,4 +19,5 @@ export function CustomText ({style, weight, ...props}:IProps) {
     })
     return <Text style={[styles.text, weight ? styles.weight : {} ,style]} {...props} />;
 }
+
 

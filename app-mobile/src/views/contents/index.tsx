@@ -3,15 +3,29 @@ import { faPizzaSlice } from "@fortawesome/free-solid-svg-icons/faPizzaSlice";
 import { faOpencart } from "@fortawesome/free-brands-svg-icons/faOpencart";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React from "react";
+import React, { useEffect } from "react";
 import { LogoutButton } from "../../components/logoutButton";
 import { CartView } from "../cart";
 import { MenuView } from "../menu";
 import { MyOrdersView } from "../myOrders";
+import { useSelector } from "react-redux";
+import { selectCart } from "../../store/slices/cartslices";
+import { selectUser } from "../../store/slices/userslices";
+import { useAppDispatch } from "../../store/store";
+import { loadUserOrders } from "../../store/slices/userOrderSlices";
+import Cart from "../../assets/img/cart.svg"
 
 const Tab = createBottomTabNavigator()
 
 export function ContentsView () {
+    const cart = useSelector(selectCart)
+    const user = useSelector(selectUser);
+    const userId = user?.id || '';
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+      dispatch(loadUserOrders(userId));
+    }, [userId, dispatch]);
+    
     return (
         <Tab.Navigator 
             screenOptions= { ({ route }) => ({
@@ -21,24 +35,6 @@ export function ContentsView () {
                 headerTintColor: '#fff',
                 headerTitleStyle: {
                     fontFamily: 'Roboto-Bold'
-                },
-                tabBarIcon: ( { color }) => {
-                    let icon
-                    switch (route.name) {
-                        case 'Menu':
-                            icon = faPizzaSlice
-                            break;
-                        case 'Cart':
-                            icon = faOpencart
-                            break;
-                        case 'MyOrders':
-                            icon = faRectangleList
-                            break;
-                    
-                        default:
-                            return null
-                    }
-                    return <FontAwesomeIcon icon={icon} size={30} color={color}/>
                 },
                 tabBarActiveBackgroundColor: '#222',
                 tabBarInactiveBackgroundColor: '#333',
@@ -54,7 +50,7 @@ export function ContentsView () {
                 },
                 tabBarIconStyle: {
                     marginTop: 12
-                }
+                },
             })}
         >
             <Tab.Screen 
@@ -63,6 +59,9 @@ export function ContentsView () {
                 options={{
                     title: 'Cardápio',
                     headerRight: () => <LogoutButton />,
+                    tabBarIcon: () => (
+                        <FontAwesomeIcon icon={faPizzaSlice} size={30} color='#fff'/>
+                    )
                 }}
             />
             <Tab.Screen 
@@ -70,7 +69,18 @@ export function ContentsView () {
                 component={CartView}
                 options={{
                     title: 'Carrinho',
-                    headerRight: () => <LogoutButton />
+                    headerRight: () => <LogoutButton />,
+                    tabBarBadge: cart ? 1 : undefined,
+                    tabBarBadgeStyle: {
+                        backgroundColor: '#CF3031',
+                        fontSize: 14,
+                        fontFamily: 'Roboto-Regular',
+                        marginStart: 8,
+                        marginTop: 16
+                    },
+                    tabBarIcon: () => (
+                        <Cart />
+                    )
                 }}
             />
             <Tab.Screen 
@@ -78,8 +88,12 @@ export function ContentsView () {
                 component={MyOrdersView}
                 options={{
                     title: 'Meus Pedidos',
-                    headerRight: () => <LogoutButton />
-                }}
+                    headerRight: () => <LogoutButton />,
+                    tabBarIcon: () => (
+                        <FontAwesomeIcon icon={faRectangleList} size={30} color='#fff'/>
+                    )
+                }
+            }
             />
         </Tab.Navigator>
     )

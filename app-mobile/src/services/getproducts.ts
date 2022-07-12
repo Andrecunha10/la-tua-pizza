@@ -1,12 +1,21 @@
-import { collection, getDocs } from "firebase/firestore"
-import { IProduct } from "../entities/product"
-import { db } from "./firebase"
+import firestore from "@react-native-firebase/firestore"
+import { IProduct } from "../entities/product";
 
-
-
-export const getProducts = async ():Promise<IProduct[]> => {
-    const doc = collection(db, 'pizzas')
-    const products = await getDocs(doc)
-    const productsSnapshot = products.docs.map(doc => ({...doc.data(), id:doc.id}))
-    return productsSnapshot as IProduct[]
+export const getProducts = async () => {
+    const productsSnapshot: IProduct[] = []
+    const doc = await firestore()
+        .collection('pizzas')
+        .get()
+        .then(querySnapshot => {
+            querySnapshot.forEach(documentSnapshot => {
+                productsSnapshot.push({
+                    id: documentSnapshot.id,
+                    name: documentSnapshot.data().name,
+                    image: documentSnapshot.data().image,
+                    description: documentSnapshot.data().description,
+                    price: documentSnapshot.data().price
+                })
+            });
+          })
+    return productsSnapshot
 }
