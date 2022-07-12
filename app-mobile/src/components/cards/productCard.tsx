@@ -1,6 +1,11 @@
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
+import { useDispatch } from "react-redux";
 import { IProduct } from "../../entities/product";
+import { addToCart } from "../../store/slices/cartslices";
+import { IRootTabParamList } from "../../views/contents";
 import { CustomButton } from "../CustomButton";
 import { CustomText } from "../CustomText";
 
@@ -9,6 +14,13 @@ type IProps = {
 }
 
 export function CardProduct ( { product }: IProps ) {
+    const dispatch = useDispatch()
+    const navigate = useNavigation<NativeStackNavigationProp<IRootTabParamList>>();
+   
+    const handleAddProductCart = (product: IProduct) => {
+        dispatch(addToCart(product))
+        navigate.navigate('Cart')
+    }
     return (
         <View style={style.wrap}>
             <Image source={{uri: product.image, width: 150, height: 150}}/>
@@ -16,7 +28,7 @@ export function CardProduct ( { product }: IProps ) {
             <CustomText>{product.description}</CustomText>
             <View style={style.buttonView}>
                 <CustomText weight="Roboto-Medium" style={style.price}>R$ {product.price.toFixed(2).replace('.', ',')}</CustomText>
-                <CustomButton>Comprar</CustomButton>
+                <CustomButton onPress={() => handleAddProductCart(product)}>Comprar</CustomButton>
             </View>
         </View>
     )

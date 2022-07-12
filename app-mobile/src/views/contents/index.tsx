@@ -14,7 +14,13 @@ import { useAppDispatch } from "../../store/store";
 import { loadUserOrders } from "../../store/slices/userOrderSlices";
 import Cart from "../../assets/img/cart.svg"
 
-const Tab = createBottomTabNavigator()
+export type IRootTabParamList = {
+    Menu: undefined
+    Cart: undefined
+    MyOrders: undefined
+}
+
+const Tab = createBottomTabNavigator<IRootTabParamList>()
 
 export function ContentsView () {
     const cart = useSelector(selectCart)
@@ -27,7 +33,7 @@ export function ContentsView () {
     
     return (
         <Tab.Navigator 
-            screenOptions= { ({ route }) => ({
+            screenOptions= {{
                 headerStyle: {
                     backgroundColor: '#CF3031',
                 },
@@ -50,7 +56,7 @@ export function ContentsView () {
                 tabBarIconStyle: {
                     marginTop: 12
                 },
-            })}
+            }}
         >
             <Tab.Screen 
                 name="Menu" 
