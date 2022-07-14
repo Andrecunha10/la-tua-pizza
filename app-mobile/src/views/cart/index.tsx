@@ -26,7 +26,7 @@ export function CartView () {
                     <CustomText weight="Roboto-Black" style={style.textEmptyCart}>Ops. Seu carrinho está vazio</CustomText>                    
                 </View>
             ) : (
-                <ScrollView style={style.sroll}>
+                <ScrollView style={style.sroll} keyboardShouldPersistTaps={'handled'}>
                     <CustomText weight="Roboto-Black" style={style.title}>Seu Pedido</CustomText>
                     <View style={style.wrapProduct}>
                         <Image source={{uri: productsOnCart.image, width: 50, height: 50}}/>

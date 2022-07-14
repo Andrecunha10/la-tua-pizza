@@ -7,21 +7,24 @@ type Iprops = {
     error?: string
     isInvalid?: boolean
     isValid?: boolean
+    editable?: boolean
 } & TextInputProps
 
 export function FormField( { 
     label,
     error,
     isInvalid = false,
-    isValid = false, 
+    isValid = false,
+    editable = true,
     ...otherProps 
 }:Iprops ) {
     return (
         <View style={styles.view}>
-            <CustomText style={styles.label}>{label}</CustomText>
+            <CustomText style={styles.label} {...otherProps}>{label}</CustomText>
             <TextInput 
-                style={[styles.input, isInvalid? styles.isInvalid : {}, isValid ? styles.isValid : {}]}
+                style={[styles.input, isInvalid? styles.isInvalid : {}, isValid ? styles.isValid : {}, editable ? {} : styles.disabled]}
                 {...otherProps}
+                editable={editable}
             />
             {isInvalid && error && 
                 <CustomText style={styles.error}>{error}</CustomText>
@@ -58,5 +61,11 @@ const styles = StyleSheet.create({
     },
     isValid: {
         borderColor: '#12b066'
+    },
+    disabled: {
+        borderColor: '#555',
+        borderWidth: 1,
+        borderStyle: 'solid',
+        backgroundColor: '#CED4DA'
     }
 })
