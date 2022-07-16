@@ -10,7 +10,8 @@ import { Loading } from "../../components/loading";
 
 export function MenuView () {
     const [products, setProducts] = useState<IProduct[]>()
-    const [loading, setLoadin] = useState(false)
+    const [loading, setLoadin] = useState(true)
+    
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -29,7 +30,7 @@ export function MenuView () {
         fetchProducts()
     }, [])
 
-    {loading && (
+    {loading || !products && (
         <Loading />
     )}
     return (

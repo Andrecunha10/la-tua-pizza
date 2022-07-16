@@ -21,11 +21,13 @@ export function FormField( {
     return (
         <View style={styles.view}>
             <CustomText style={styles.label} {...otherProps}>{label}</CustomText>
-            <TextInput 
-                style={[styles.input, isInvalid? styles.isInvalid : {}, isValid ? styles.isValid : {}, editable ? {} : styles.disabled]}
-                {...otherProps}
-                editable={editable}
-            />
+            <View style={editable ? {} : styles.disabled}>
+                <TextInput 
+                    style={[styles.input, isInvalid? styles.isInvalid : {}, isValid ? styles.isValid : {}]}
+                    {...otherProps}
+                    editable={editable}
+                />
+            </View>
             {isInvalid && error && 
                 <CustomText style={styles.error}>{error}</CustomText>
             }
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
         marginBottom: 16
     },
     input: {
-        borderColor: '#CED4DA',
+        borderColor: '#9f9f9f',
         borderWidth: 1,
         borderStyle: 'solid',
         borderRadius: 4,
@@ -62,10 +64,10 @@ const styles = StyleSheet.create({
     isValid: {
         borderColor: '#12b066'
     },
-    disabled: {
-        borderColor: '#555',
+    disabled:{
+        borderColor: '#CED4DA',
         borderWidth: 1,
         borderStyle: 'solid',
-        backgroundColor: '#CED4DA'
+        borderRadius: 4,
     }
 })

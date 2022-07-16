@@ -5,9 +5,11 @@ import { calculateDistance } from "./calculatedistance"
 export type INewEstimante = {
     address: IAddress
     subtotal: number
+    name: string
+    phone: string
 }
 
-export const createEstimate = async ( { address, subtotal }: INewEstimante ):Promise<IEstimate> => {
+export const createEstimate = async ( { address, subtotal, ...otherProps }: INewEstimante ):Promise<IEstimate> => {
     const {distance, duration} = await calculateDistance(address)
     const minutes = Math.ceil(duration / 60)
     const value = calculateValue(distance, minutes)

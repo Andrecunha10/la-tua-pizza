@@ -3,14 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React from "react";
 import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { CalculateShipping } from "../../components/calculateShipping";
 import { Container } from "../../components/Container";
 import { CustomText } from "../../components/CustomText";
 import { deleteToCart, selectCart } from "../../store/slices/cartslices";
 import { selectUser } from "../../store/slices/userslices";
 import EmptyCart from "../../assets/img/empty_cart.svg"
+import { CustomButton } from "../../components/CustomButton";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { IRootStackParamList } from "../../routes";
 
 export function CartView () {
+    
+    const navigate = useNavigation<NativeStackNavigationProp<IRootStackParamList>>();
     const productsOnCart = useSelector(selectCart)
     const user = useSelector(selectUser)
     const dispatch = useDispatch()
@@ -36,12 +41,14 @@ export function CartView () {
                             <FontAwesomeIcon icon={faTrash}/>
                         </TouchableOpacity>
                     </View>
-                    <CalculateShipping 
-                        title="Calcular Frete"
-                        user={user}
-                        cart={productsOnCart}
-                        button="Calcular Frete"
-                    />                
+                    <View style={style.buttonWrap}>
+                        <View style={{ flex: 1, marginEnd: 16 }}>
+                            <CustomButton variant="white" onPress={() => navigate.goBack()}>Voltar</CustomButton>
+                        </View>
+                        <View style={{ flex: 1, marginStart: 16 }}>
+                            <CustomButton onPress={() => navigate.navigate('CalculateShipping')}>Calcular Frete</CustomButton>
+                        </View>
+                    </View>              
                 </ScrollView>
             )}            
         </Container>
@@ -77,5 +84,10 @@ const style = StyleSheet.create({
     },
     sroll: {
         padding: 16
-    }
+    },
+    buttonWrap: {
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
 })

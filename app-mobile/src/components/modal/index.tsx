@@ -33,7 +33,7 @@ export function OrderModal({ order, visible, onRequestClose }: IProps) {
                         <CustomText weight="Roboto-Bold">{order.product.name}</CustomText>
                         <CustomText weight="Roboto-Bold">R$ {(order.product.price).toFixed(2).replace('.', ',')}</CustomText>
                     </View>
-                    <CustomText weight="Roboto-Black" style={{textAlign: 'right'}}>Total: <CustomText style={{color:'#CF3031'}} weight="Roboto-Bold">R$ {order.product.price}</CustomText></CustomText>
+                    <CustomText weight="Roboto-Black" style={{textAlign: 'right'}}>Total: <CustomText style={{color:'#CF3031'}} weight="Roboto-Bold">R$ {order.estimate.valueTotal.toFixed(2).replace('.', ',')}</CustomText></CustomText>
                 </View>
             </View>
         </Modal>

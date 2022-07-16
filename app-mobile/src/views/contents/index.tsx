@@ -56,6 +56,7 @@ export function ContentsView () {
                 tabBarIconStyle: {
                     marginTop: 12
                 },
+                tabBarHideOnKeyboard: true
             }}
         >
             <Tab.Screen 
@@ -96,10 +97,8 @@ export function ContentsView () {
                     headerRight: () => <LogoutButton />,
                     tabBarIcon: () => (
                         <FontAwesomeIcon icon={faRectangleList} size={30} color='#fff'/>
-                    )
-                }
-            }
-            />
+                )}}
+            />  
         </Tab.Navigator>
     )
 }
