@@ -6,41 +6,40 @@ import { useDispatch, useSelector } from "react-redux";
 import { Container } from "../../components/Container";
 import { CustomText } from "../../components/CustomText";
 import { deleteToCart, selectCart } from "../../store/slices/cartslices";
-import { selectUser } from "../../store/slices/userslices";
 import EmptyCart from "../../assets/img/empty_cart.svg"
 import { CustomButton } from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { IRootStackParamList } from "../../routes";
 
-export function CartView () {
-    
+export function CartView() {
+
     const navigate = useNavigation<NativeStackNavigationProp<IRootStackParamList>>();
     const productsOnCart = useSelector(selectCart)
-    const user = useSelector(selectUser)
     const dispatch = useDispatch()
 
-    const handleDeleteProduct = () =>  {
+    const handleDeleteProduct = () => {
         dispatch(deleteToCart())
     }
     return (
         <Container>
-            {!productsOnCart || !user ? (
+            {!productsOnCart ? (
                 <View style={style.emptyCartWrap}>
-                    <EmptyCart width={150} height={150}/>
-                    <CustomText weight="Roboto-Black" style={style.textEmptyCart}>Ops. Seu carrinho está vazio</CustomText>                    
+                    <EmptyCart width={150} height={150} />
+                    <CustomText weight="Roboto-Black" style={style.textEmptyCart}>Ops. Seu carrinho está vazio</CustomText>
                 </View>
             ) : (
                 <ScrollView style={style.sroll} keyboardShouldPersistTaps={'handled'}>
                     <CustomText weight="Roboto-Black" style={style.title}>Seu Pedido</CustomText>
                     <View style={style.wrapProduct}>
-                        <Image source={{uri: productsOnCart.image, width: 50, height: 50}}/>
+                        <Image source={{ uri: productsOnCart.image, width: 50, height: 50 }} />
                         <CustomText weight="Roboto-Bold">{productsOnCart.name}</CustomText>
                         <CustomText weight="Roboto-Bold">R$ {productsOnCart.price.toFixed(2).replace('.', ',')}</CustomText>
-                        <TouchableOpacity style={style.buttonTrash} onPress={handleDeleteProduct}> 
-                            <FontAwesomeIcon icon={faTrash}/>
+                        <TouchableOpacity style={style.buttonTrash} onPress={handleDeleteProduct}>
+                            <FontAwesomeIcon icon={faTrash} />
                         </TouchableOpacity>
                     </View>
+                    <CustomText weight="Roboto-Black" style={style.subtotal}>Subtotal: <CustomText weight="Roboto-Black" style={style.subtotalValue}>R$ {productsOnCart.price.toFixed(2).replace('.', ',')}</CustomText></CustomText>
                     <View style={style.buttonWrap}>
                         <View style={{ flex: 1, marginEnd: 16 }}>
                             <CustomButton variant="white" onPress={() => navigate.goBack()}>Voltar</CustomButton>
@@ -48,9 +47,9 @@ export function CartView () {
                         <View style={{ flex: 1, marginStart: 16 }}>
                             <CustomButton onPress={() => navigate.navigate('CalculateShipping')}>Calcular Frete</CustomButton>
                         </View>
-                    </View>              
+                    </View>
                 </ScrollView>
-            )}            
+            )}
         </Container>
     )
 }
@@ -63,7 +62,7 @@ const style = StyleSheet.create({
     },
     textEmptyCart: {
         fontSize: 24,
-        marginTop:20
+        marginTop: 20
     },
     title: {
         fontSize: 20,
@@ -90,4 +89,13 @@ const style = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 20,
     },
+    subtotal: {
+        fontSize: 20,
+        marginBottom: 16,
+        textAlign: 'right',
+    },
+    subtotalValue: {
+        color: '#CF3031',
+        fontSize: 20,
+    }
 })

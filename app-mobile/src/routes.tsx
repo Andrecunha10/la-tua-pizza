@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, selecIsLoadingUser, selectIsUserLoggedIn, updateUser } from "./store/slices/userslices";
 import { LogoutButton } from "./components/logoutButton";
 import { Loading } from "./components/loading";
-import { CalculateShipping } from "./components/calculateShipping";
+import { CalculateShipping } from "./views/calculateShipping";
 import { FinalizeOrder } from "./views/finalizeOrder";
 import { OrderSucess } from "./views/ordersucess";
 
@@ -67,7 +67,6 @@ export function Routes () {
                         component={LoginView}
                         options={{
                             title: 'Entrar no sistema',
-                            headerRight: () => <LogoutButton />
                         }}
                        
                     />
@@ -103,6 +102,7 @@ export function Routes () {
                         options={{
                             title: 'Finalizar o Pedido',
                             headerRight: () => <LogoutButton />,
+                            headerBackVisible: false,
                         }}
                     />
                 </>

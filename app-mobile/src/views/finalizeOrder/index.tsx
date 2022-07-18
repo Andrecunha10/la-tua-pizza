@@ -2,18 +2,17 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import {  useSelector } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
 import { Container } from "../../components/Container";
 import { CustomButton } from "../../components/CustomButton";
 import { CustomText } from "../../components/CustomText";
 import { FormField } from "../../components/FormField";
 import { IRootStackParamList } from "../../routes";
 import { createOrder } from "../../services/createorder";
-import {  selectCart } from "../../store/slices/cartslices";
-import {  selectCurrentEstimanete } from "../../store/slices/estimateslice";
+import {  deleteToCart, selectCart } from "../../store/slices/cartslices";
+import {  clearCurrenteEstimate, selectCurrentEstimanete } from "../../store/slices/estimateslice";
 import { selectUser } from "../../store/slices/userslices";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import { OrderSucess } from "../ordersucess";
 
 export function FinalizeOrder() {
     const navigate = useNavigation<NativeStackNavigationProp<IRootStackParamList>>()
@@ -21,6 +20,7 @@ export function FinalizeOrder() {
     const user = useSelector(selectUser)
     const cart = useSelector(selectCart)
     const productsOnCart = useSelector(selectCart)
+    const dispatch = useDispatch()
 
     const PayOnDelivery = async () => {
         if (!estimate || !user || !cart) {
@@ -33,7 +33,8 @@ export function FinalizeOrder() {
                 user: user,
                 product: cart
             })
-            
+            dispatch(deleteToCart())
+            dispatch(clearCurrenteEstimate())
             navigate.navigate('OrderSucess')            
         } catch {
             Toast.show({
@@ -44,22 +45,17 @@ export function FinalizeOrder() {
         }
     }
 
-    if (!productsOnCart || !user || !estimate){
-        return (
-            <OrderSucess />
-        )
-    }
     return (
         <Container padding>
             <CustomText style={style.title}>Finalizar Pedido</CustomText>
             <FormField
                 label="Nome"
-                value={user.firstName}
+                value={user?.firstName}
                 editable={false}
             />
             <FormField
                 label="Telefone"
-                value={user.phone}
+                value={user?.phone}
                 editable={false}
             />
             <FormField
@@ -67,13 +63,14 @@ export function FinalizeOrder() {
                 value={estimate?.deliveryAddress}
                 editable={false}
             />
+            <CustomText style={style.title}>Confira Seu Carrinho</CustomText>
             <View style={style.wrapProduct}>
-                <Image source={{ uri: productsOnCart.image, width: 50, height: 50 }} />
-                <CustomText weight="Roboto-Bold">{productsOnCart.name}</CustomText>
-                <CustomText weight="Roboto-Bold">R$ {productsOnCart.price.toFixed(2).replace('.', ',')}</CustomText>
+                <Image source={{ uri: productsOnCart?.image, width: 50, height: 50 }} />
+                <CustomText weight="Roboto-Bold">{productsOnCart?.name}</CustomText>
+                <CustomText weight="Roboto-Bold">R$ {productsOnCart?.price.toFixed(2).replace('.', ',')}</CustomText>
             </View>
             <CustomText weight="Roboto-Bold" style={style.end}>Taxa de Engrega: R$ {(4).toFixed(2).replace('.', ',')}</CustomText>
-            <CustomText weight="Roboto-Black" style={style.end}>Total: <CustomText weight="Roboto-Black" style={style.totalValue}>R$ {estimate.valueTotal.toFixed(2).replace('.', ',')}</CustomText></CustomText>
+            <CustomText weight="Roboto-Black" style={style.end}>Total: <CustomText weight="Roboto-Black" style={style.totalValue}>R$ {estimate?.valueTotal.toFixed(2).replace('.', ',')}</CustomText></CustomText>
             <View style={style.buttonWrap}>
                 <View style={{ flex: 1, marginEnd: 16 }}>
                     <CustomButton variant="white" onPress={() => navigate.goBack()}>Voltar</CustomButton>
@@ -114,10 +111,10 @@ const style = StyleSheet.create({
     },
     end: {
         textAlign: 'right',
-        marginBottom: 16
+        marginBottom: 16,
+        fontSize: 20
     },
     totalValue: {
         color: '#CF3031',
-        fontSize: 20
     }
 })

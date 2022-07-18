@@ -1,16 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { StyleSheet, Switch, View } from "react-native";
-import { CustomButton } from "../CustomButton";
-import { CustomText } from "../CustomText";
-import { FormField } from "../FormField";
+import { CustomButton } from "../../components/CustomButton";
+import { CustomText } from "../../components/CustomText";
+import { FormField } from "../../components/FormField";
 import * as yup from 'yup';
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { IAddress } from "../../entities/address";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { selectUser } from "../../store/slices/userslices";
-import { Container } from "../Container";
+import { Container } from "../../components/Container";
 import { selectCart } from "../../store/slices/cartslices";
 import { setCurrentEstimate } from "../../store/slices/estimateslice";
 import { GoogleAPIKey } from "../../services/configure";
@@ -30,16 +30,10 @@ export function CalculateShipping() {
     const navigate = useNavigation<NativeStackNavigationProp<IRootStackParamList>>()
     const dispatch = useDispatch()
 
-    if (!user || !cart) {
-        return(
-            <CustomText>Error</CustomText>
-        )
-        
-    }
     const formik = useFormik({
         initialValues: {
-            name: user.firstName,
-            phone: user.phone,
+            name: user?.firstName,
+            phone: user?.phone,
         },
         validationSchema: yup.object().shape({
             name: yup.string()
@@ -49,20 +43,19 @@ export function CalculateShipping() {
             address: yup.object()
                 .typeError('Selecione um endereço na lista.')
         }),
-        onSubmit: async (values) => {
-            if (!user.address){
-                return console.log('oi')
+        onSubmit: async () => {
+            if (!user?.address){
+                return null
             }
             const estimate = {
-                deliveryAddress: adress?.address || user.address.address,
+                deliveryAddress: adress?.address || user?.address.address,
                 time: 45,
                 distance: 5,
                 value: 4,
-                valueTotal: cart.price + 4,
-                lat: adress?.lat || user.address.lng,
-                lng: adress?.lng|| user.address.lng,
+                valueTotal: (cart?.price || 0) + 4,
+                lat: adress?.lat || user?.address.lng,
+                lng: adress?.lng|| user?.address.lng,
             }
-            console.log(estimate)
             dispatch(setCurrentEstimate(estimate))
             navigate.navigate('FinalizeOrder')
         }
@@ -135,7 +128,7 @@ export function CalculateShipping() {
                 <FormField
                     label="Endereço"
                     placeholder='Seu Endereço'
-                    value={user.address?.address}
+                    value={user?.address?.address}
                     editable={false}
                     style={isEnabled ? style.displayNone : {}}
                 />
@@ -150,7 +143,7 @@ export function CalculateShipping() {
                     value={isEnabled}
                 />
             </View>
-            <CustomText weight="Roboto-Black" style={style.subtotal}>Subtotal: <CustomText weight="Roboto-Black" style={style.subtotalValue} >R$ {cart.price.toFixed(2).replace('.', ',')}</CustomText></CustomText>
+            <CustomText weight="Roboto-Black" style={style.subtotal}>Subtotal: <CustomText weight="Roboto-Black" style={style.subtotalValue} >R$ {cart?.price.toFixed(2).replace('.', ',')}</CustomText></CustomText>
             <View style={style.buttonWrap}>
                 <View style={{ flex: 1, marginEnd: 16 }}>
                     <CustomButton variant="white" onPress={() => navigate.goBack()}>Voltar</CustomButton>
